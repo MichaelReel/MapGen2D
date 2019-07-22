@@ -7,6 +7,9 @@ var base_seed = 1
 
 var ground_dirt_tile_name = "Dirt Auto"
 
+var marker_tile_name = "marker"
+var start_tile_name = "start"
+
 var noise_octaves := 3
 var noise_period := 20.0
 var noise_persistence := 0.8
@@ -15,13 +18,19 @@ var base_land_threshold := -0.15
 var ground_threshold := 0.0
 
 # Reusable references
-var base_map : TileMap
-var ground_map : TileMap
-var base_tileset : TileSet
-var ground_tileset: TileSet
+var base_map          : TileMap
+var ground_map        : TileMap
+var obstacle_map      : TileMap
+
+var base_tileset      : TileSet
+var ground_tileset    : TileSet
+var obstacle_tileset  : TileSet
+
 var base_default_tile : int
-var base_water_tile : int
-var ground_dirt_tile : int
+var base_water_tile   : int
+var ground_dirt_tile  : int
+var marker_tile       : int
+var start_tile        : int
 
 var base_noise : OpenSimplexNoise
 var ground_noise : OpenSimplexNoise
@@ -35,9 +44,14 @@ func setup_reusables():
 	base_tileset = base_map.tile_set
 	ground_map = $Ground
 	ground_tileset = ground_map.tile_set
+	obstacle_map = $Obstacles
+	obstacle_tileset = obstacle_map.tile_set
+	
 	base_default_tile = base_tileset.find_tile_by_name(base_default_tile_name)
 	base_water_tile = base_tileset.find_tile_by_name(base_water_tile_name)
 	ground_dirt_tile = ground_tileset.find_tile_by_name(ground_dirt_tile_name)
+	marker_tile = obstacle_tileset.find_tile_by_name(marker_tile_name)
+	start_tile = obstacle_tileset.find_tile_by_name(start_tile_name)
 	
 	# Configure noise
 	base_noise = OpenSimplexNoise.new()
@@ -63,6 +77,10 @@ func create_base_layer():
 				# Draw some dirt on top of the land
 				if ground_noise.get_noise_2d(x, y) > ground_threshold:
 					ground_map.set_cell(x, y, ground_dirt_tile)
+					
+					# Find positions for structures
+					if (is_peak_point(x, y, ground_noise)):
+						attempt_place_obstacle(x, y, ground_noise, ground_threshold)
 				
 				continue
 			# Default to water
@@ -71,3 +89,44 @@ func create_base_layer():
 	# Call autotiling
 	base_map.update_bitmask_region()
 	ground_map.update_bitmask_region()
+	
+func is_peak_point(x : int, y : int, noise : OpenSimplexNoise):
+	# If this point is higher than the surrounding points
+	var p = noise.get_noise_2d(x, y)
+	for ty in range (y-1, y+2):
+		for tx in range (x-1, x+2):
+			var tp = noise.get_noise_2d(tx, ty)
+			if tp > p:
+				return false
+	return true
+
+func attempt_place_obstacle(x : int, y : int, noise, threshold):
+	print ("Plausable structure spot: (" + str(x) + "," + str(y) + ")")
+	
+	# Find the largest reasonable rect centered on the current 'peak'
+	var dx_max = 0
+	var dy_max = 0
+	var dx_before_dy = true
+	
+	while (dx_max <= 3 and dy_max <= 3
+			and noise.get_noise_2d(x + dx_max + 1, y + dy_max + 1) > threshold
+			and obstacle_map.get_cell(x + dx_max + 1, y + dy_max + 1) == TileMap.INVALID_CELL
+			and noise.get_noise_2d(x - dx_max - 1, y + dy_max + 1) > threshold
+			and obstacle_map.get_cell(x - dx_max - 1, y + dy_max + 1) == TileMap.INVALID_CELL
+			and noise.get_noise_2d(x + dx_max + 1, y - dy_max - 1) > threshold
+			and obstacle_map.get_cell(x + dx_max + 1, y - dy_max - 1) == TileMap.INVALID_CELL
+			and noise.get_noise_2d(x - dx_max - 1, y - dy_max - 1) > threshold
+			and obstacle_map.get_cell(x - dx_max - 1, y - dy_max - 1) == TileMap.INVALID_CELL):
+		# Increase in one dimension
+		if dx_before_dy:
+			dx_max += 1
+		else:
+			dy_max += 1
+		dx_before_dy = not dx_before_dy
+	
+	print ("Starting boundary: (" + str(x - dx_max) + "," + str(y - dy_max) + ") to (" + str(x + dx_max) + "," + str(x + dx_max) + ")") 
+	for ty in range (y - dy_max, y + dy_max + 1):
+		for tx in range (x - dx_max, x + dx_max + 1):
+			obstacle_map.set_cell(tx, ty, marker_tile)
+	
+	obstacle_map.set_cell(x, y, start_tile)
