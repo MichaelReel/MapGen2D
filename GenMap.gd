@@ -21,16 +21,18 @@ var ground_threshold := 0.0
 var base_map          : TileMap
 var ground_map        : TileMap
 var obstacle_map      : TileMap
+var canopy            : TileMap
+var structures        : Node2D
 
 var base_tileset      : TileSet
 var ground_tileset    : TileSet
-var obstacle_tileset  : TileSet
+var obstacle_tileset  : TileSet # Debug
 
 var base_default_tile : int
 var base_water_tile   : int
 var ground_dirt_tile  : int
-var marker_tile       : int
-var start_tile        : int
+var marker_tile       : int     # Debug
+var start_tile        : int     # Debug
 
 var base_noise : OpenSimplexNoise
 var ground_noise : OpenSimplexNoise
@@ -46,6 +48,9 @@ func setup_reusables():
 	ground_tileset = ground_map.tile_set
 	obstacle_map = $Obstacles
 	obstacle_tileset = obstacle_map.tile_set
+	canopy = $Canopy
+	
+	structures = $StructureTemplates
 	
 	base_default_tile = base_tileset.find_tile_by_name(base_default_tile_name)
 	base_water_tile = base_tileset.find_tile_by_name(base_water_tile_name)
@@ -74,8 +79,8 @@ func create_base_layer():
 			if base_noise.get_noise_2d(x, y) > base_land_threshold:
 				base_map.set_cell(x, y, base_default_tile)
 				
-				# Draw some dirt on top of the land
-				if ground_noise.get_noise_2d(x, y) > ground_threshold:
+				# Draw some dirt on top of the land, as long as the tile isn't occupied
+				if ground_noise.get_noise_2d(x, y) > ground_threshold and ground_map.get_cell(x, y) == TileMap.INVALID_CELL:
 					ground_map.set_cell(x, y, ground_dirt_tile)
 					
 					# Find positions for structures
@@ -90,7 +95,7 @@ func create_base_layer():
 	base_map.update_bitmask_region()
 	ground_map.update_bitmask_region()
 	
-func is_peak_point(x : int, y : int, noise : OpenSimplexNoise):
+func is_peak_point(x : int, y : int, noise : OpenSimplexNoise) -> bool:
 	# If this point is higher than the surrounding points
 	var p = noise.get_noise_2d(x, y)
 	for ty in range (y-1, y+2):
@@ -124,9 +129,42 @@ func attempt_place_obstacle(x : int, y : int, noise, threshold):
 			dy_max += 1
 		dx_before_dy = not dx_before_dy
 	
+	## Debug markers
 	print ("Starting boundary: (" + str(x - dx_max) + "," + str(y - dy_max) + ") to (" + str(x + dx_max) + "," + str(x + dx_max) + ")") 
 	for ty in range (y - dy_max, y + dy_max + 1):
 		for tx in range (x - dx_max, x + dx_max + 1):
 			obstacle_map.set_cell(tx, ty, marker_tile)
-	
 	obstacle_map.set_cell(x, y, start_tile)
+	##
+	
+	var template_node : Node2D = get_template_that_will_fit(dx_max * 2 + 1, dy_max * 2 + 1)
+	merge_structure_into_map(Vector2(x - dx_max, y - dy_max), template_node)
+	
+func get_template_that_will_fit(width, height) -> Node2D:
+	var template = structures.get_node("Default")
+	
+	# TODO: Select a structure that will fit - this needs to be smarter
+	if width >= 5 and height >= 5:
+		template = structures.get_node("Structure01")
+	elif width >= 3 and height >= 3:
+		template = structures.get_node("Structure03")
+	
+	return template
+
+func merge_structure_into_map(offset : Vector2, structure : Node2D):
+	# For each tilemap in struture, copy it into the similarly name root tilemap
+	for sub_node in structure.get_children():
+		if sub_node is TileMap:
+			# What's the name, and is there one on the root?
+			var main_node = get_node(sub_node.name)
+			if main_node is TileMap:
+				# Copy sub_node into main_node
+				var cell_list = (sub_node as TileMap).get_used_cells()
+				for cellv in cell_list:
+					var tile_id = sub_node.get_cellv(cellv)
+					var flip_x = sub_node.is_cell_x_flipped(cellv.x, cellv.y)
+					var flip_y = sub_node.is_cell_y_flipped(cellv.x, cellv.y)
+					var transpose = sub_node.is_cell_transposed(cellv.x, cellv.y)
+					var autov = sub_node.get_cell_autotile_coord(cellv.x, cellv.y)
+					var in_pos = cellv + offset
+					main_node.set_cell(in_pos.x, in_pos.y, tile_id, flip_x, flip_y, transpose, autov)
