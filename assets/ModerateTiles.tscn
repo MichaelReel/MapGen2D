@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://ModerateTileSet.tres" type="TileSet" id=1]
+[ext_resource path="res://assets/ModerateTileSet.tres" type="TileSet" id=1]
+
 
 [node name="ModerateTiles" type="Node2D"]
 
