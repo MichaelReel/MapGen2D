@@ -1,17 +1,32 @@
 extends Node2D
 
-export(float) var speed = 2.0
+export(float) var speed = 4.0
 export(int) var tile_size = 16
 
+var anim_sp_ratio = 0.5
 var axis_flip = false # This is to make diagonal movement 'slightly' less tedious
+
+var rays : Dictionary
+
+func _ready():
+	rays = {
+		"0_1": $RayCastDown,
+		"0_-1": $RayCastUp,
+		"-1_0": $RayCastLeft,
+		"1_0": $RayCastRight
+	}
+	$AnimationPlayer.playback_speed = speed * anim_sp_ratio
 
 func _process(delta):
 	var dir : Vector2 = get_input_dir()
 	if dir != Vector2.ZERO:
 		var anim_name : String = str(int(dir.x)) + "_" + str(int(dir.y))
-		var target : Vector2 = position + dir * tile_size
-		$Tween.interpolate_property(self, "position", position, target, 1.0 / speed, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		$Tween.start()
+		if (rays[anim_name] as RayCast2D).is_colliding():
+			anim_name += "_look"
+		else:
+			var target : Vector2 = position + dir * tile_size
+			$Tween.interpolate_property(self, "position", position, target, 1.0 / speed, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			$Tween.start()
 		$AnimationPlayer.play(anim_name)
 
 func _on_Tween_tween_started(object, key):

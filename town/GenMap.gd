@@ -3,7 +3,7 @@ extends Node2D
 # Config
 var base_default_tile_name = "Base Grass"
 var base_water_tile_name = "Base Water Auto"
-var base_seed = 1
+export(int) var base_seed = 1
 
 var ground_dirt_tile_name = "Dirt Auto"
 
@@ -106,7 +106,7 @@ func is_peak_point(x : int, y : int, noise : OpenSimplexNoise) -> bool:
 	return true
 
 func attempt_place_obstacle(x : int, y : int, noise, threshold):
-	print ("Plausable structure spot: (" + str(x) + "," + str(y) + ")")
+#	print ("Plausable structure spot: (" + str(x) + "," + str(y) + ")")
 	
 	# Find the largest reasonable rect centered on the current 'peak'
 	var dx_max = 0
@@ -130,7 +130,7 @@ func attempt_place_obstacle(x : int, y : int, noise, threshold):
 		dx_before_dy = not dx_before_dy
 	
 	## Debug markers
-	print ("Starting boundary: (" + str(x - dx_max) + "," + str(y - dy_max) + ") to (" + str(x + dx_max) + "," + str(x + dx_max) + ")") 
+#	print ("Starting boundary: (" + str(x - dx_max) + "," + str(y - dy_max) + ") to (" + str(x + dx_max) + "," + str(x + dx_max) + ")") 
 	for ty in range (y - dy_max, y + dy_max + 1):
 		for tx in range (x - dx_max, x + dx_max + 1):
 			obstacle_map.set_cell(tx, ty, marker_tile)
