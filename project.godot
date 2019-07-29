@@ -19,6 +19,10 @@ config/name="2D Map Generation"
 run/main_scene="res://Game.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+SceneChanger="*res://autoload/SceneChanger.tscn"
+
 [rendering]
 
 quality/2d/use_pixel_snap=true

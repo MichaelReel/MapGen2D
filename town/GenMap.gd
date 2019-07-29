@@ -1,9 +1,10 @@
 extends Node2D
 
 # Config
+export(int) var base_seed = 1
+
 var base_default_tile_name = "Base Grass"
 var base_water_tile_name = "Base Water Auto"
-export(int) var base_seed = 1
 
 var ground_dirt_tile_name = "Dirt Auto"
 
@@ -18,54 +19,40 @@ var base_land_threshold := -0.15
 var ground_threshold := 0.0
 
 # Reusable references
-var base_map          : TileMap
-var ground_map        : TileMap
-var obstacle_map      : TileMap
-var canopy            : TileMap
-var structures        : Node2D
+onready var base_map     := $Base
+onready var ground_map   := $Ground
+onready var obstacle_map := $Obstacles
+onready var canopy       := $Canopy
+onready var structures   := $StructureTemplates
 
-var base_tileset      : TileSet
-var ground_tileset    : TileSet
-var obstacle_tileset  : TileSet # Debug
+onready var base_tileset     : TileSet = base_map.tile_set
+onready var ground_tileset   : TileSet = ground_map.tile_set
+onready var obstacle_tileset : TileSet = obstacle_map.tile_set # Debug
 
-var base_default_tile : int
-var base_water_tile   : int
-var ground_dirt_tile  : int
-var marker_tile       : int     # Debug
-var start_tile        : int     # Debug
+onready var base_default_tile := base_tileset.find_tile_by_name(base_default_tile_name)
+onready var base_water_tile   := base_tileset.find_tile_by_name(base_water_tile_name)
+onready var ground_dirt_tile  := ground_tileset.find_tile_by_name(ground_dirt_tile_name)
+onready var marker_tile       := obstacle_tileset.find_tile_by_name(marker_tile_name) # Debug
+onready var start_tile        := obstacle_tileset.find_tile_by_name(start_tile_name)  # Debug
 
-var base_noise : OpenSimplexNoise
-var ground_noise : OpenSimplexNoise
+onready var base_noise   := OpenSimplexNoise.new()
+onready var ground_noise := OpenSimplexNoise.new()
+
+onready var possible_spawn_positions := Array()
+onready var player                   := $Player
 
 func _ready():
 	setup_reusables()
 	create_base_layer()
+	place_player()
 	
 func setup_reusables():
-	base_map = $Base
-	base_tileset = base_map.tile_set
-	ground_map = $Ground
-	ground_tileset = ground_map.tile_set
-	obstacle_map = $Obstacles
-	obstacle_tileset = obstacle_map.tile_set
-	canopy = $Canopy
-	
-	structures = $StructureTemplates
-	
-	base_default_tile = base_tileset.find_tile_by_name(base_default_tile_name)
-	base_water_tile = base_tileset.find_tile_by_name(base_water_tile_name)
-	ground_dirt_tile = ground_tileset.find_tile_by_name(ground_dirt_tile_name)
-	marker_tile = obstacle_tileset.find_tile_by_name(marker_tile_name)
-	start_tile = obstacle_tileset.find_tile_by_name(start_tile_name)
-	
 	# Configure noise
-	base_noise = OpenSimplexNoise.new()
 	base_noise.seed = base_seed
 	base_noise.octaves = noise_octaves
 	base_noise.period = noise_period
 	base_noise.persistence = noise_persistence
 	
-	ground_noise = OpenSimplexNoise.new()
 	ground_noise.seed = base_seed + 1
 	ground_noise.octaves = noise_octaves
 	ground_noise.period = noise_period
@@ -78,8 +65,9 @@ func create_base_layer():
 			# Draw islands (using noise)
 			if base_noise.get_noise_2d(x, y) > base_land_threshold:
 				base_map.set_cell(x, y, base_default_tile)
+				possible_spawn_positions.append(Vector2(x * 16, y * 16))
 				
-				# Draw some dirt on top of the land, as long as the tile isn't occupied
+				# Draw some dirt on top of the land, as long as the tile isn't already occupied
 				if ground_noise.get_noise_2d(x, y) > ground_threshold and ground_map.get_cell(x, y) == TileMap.INVALID_CELL:
 					ground_map.set_cell(x, y, ground_dirt_tile)
 					
@@ -143,7 +131,7 @@ func attempt_place_obstacle(x : int, y : int, noise, threshold):
 func get_template_that_will_fit(width, height) -> Node2D:
 	var template = structures.get_node("Default")
 	
-	# TODO: Select a structure that will fit - this needs to be smarter
+	# TODO: Select a structure that will fit - this needs to be smarter - and need more structures
 	if width >= 5 and height >= 5:
 		template = structures.get_node("Structure01")
 	elif width >= 3 and height >= 3:
@@ -168,3 +156,15 @@ func merge_structure_into_map(offset : Vector2, structure : Node2D):
 					var autov = sub_node.get_cell_autotile_coord(cellv.x, cellv.y)
 					var in_pos = cellv + offset
 					main_node.set_cell(in_pos.x, in_pos.y, tile_id, flip_x, flip_y, transpose, autov)
+	
+	# TODO: If there's a portal layer, setup portal nodes
+
+func place_player():
+	# TODO: have we transitioned in from somewhere?
+	
+	# Not transitioned, place in a 'sensible' spot
+	# # Not sure the best way. How about shuffle all vectors and loop through until we run out or one is good?
+	possible_spawn_positions.shuffle()
+	for possible_spawn in possible_spawn_positions:
+		player.position = possible_spawn
+		pass

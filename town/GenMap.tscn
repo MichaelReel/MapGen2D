@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://town/GenMap.gd" type="Script" id=1]
 [ext_resource path="res://assets/ModerateTileSet.tres" type="TileSet" id=2]
+[ext_resource path="res://player/Player.tscn" type="PackedScene" id=3]
 
 [node name="GenMap" type="Node2D"]
 script = ExtResource( 1 )
@@ -40,6 +41,7 @@ __meta__ = {
 }
 
 [node name="StructureTemplates" type="Node2D" parent="."]
+visible = false
 
 [node name="Default" type="Node2D" parent="StructureTemplates"]
 visible = false
@@ -64,7 +66,7 @@ cell_size = Vector2( 16, 16 )
 collision_layer = 0
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( 65536, 18, 0, 65540, 18, 0, 131072, 18, 0, 131073, 18, 0, 131074, 18, 0, 131075, 18, 0, 131076, 18, 0, 196608, 18, 0, 196609, 18, 0, 196610, 18, 0, 196611, 18, 0, 196612, 18, 0, 262144, 18, 0, 262145, 18, 0, 262146, 18, 0, 262147, 18, 0, 262148, 18, 0 )
+tile_data = PoolIntArray( 262146, 21, 0 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -111,7 +113,7 @@ cell_size = Vector2( 16, 16 )
 collision_layer = 0
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( 65536, 18, 0, 65537, 18, 0, 65538, 18, 0, 131072, 18, 0, 131073, 18, 0, 131074, 18, 0 )
+tile_data = PoolIntArray( 131073, 21, 0 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -148,3 +150,6 @@ tile_data = PoolIntArray( -65536, 15, 0, -65535, 15, 65540, -65534, 15, 1, 0, 15
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 256, 192 )

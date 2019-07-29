@@ -6,7 +6,8 @@ export(int) var tile_size = 16
 var anim_sp_ratio = 0.5
 var axis_flip = false # This is to make diagonal movement 'slightly' less tedious
 
-var rays : Dictionary
+onready var body : KinematicBody2D = $KinematicBody2D
+onready var rays : Dictionary
 
 func _ready():
 	rays = {
@@ -48,3 +49,6 @@ func get_input_dir() -> Vector2:
 		axis_flip = not axis_flip
  
 	return dir
+
+func has_collided() -> bool:
+	return true if body.get_collider() else false
