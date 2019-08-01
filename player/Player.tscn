@@ -132,11 +132,18 @@ tracks/0/keys = {
 }
 
 [node name="Player" type="Node2D"]
+z_index = 2
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Tween" type="Tween" parent="."]
 
 [node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
 position = Vector2( 8, 8 )

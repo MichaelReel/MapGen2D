@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/ModerateTileSet.tres" type="TileSet" id=1]
+
+[node name="Default" type="Node2D"]
+visible = false
+
+[node name="Obstacles" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_layer = 0
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 0, 20, 196608 )
+__meta__ = {
+"_edit_lock_": true
+}

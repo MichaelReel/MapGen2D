@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/ModerateTileSet.tres" type="TileSet" id=1]
+
+[node name="Structure03" type="Node2D"]
+visible = false
+
+[node name="Ground" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_layer = 0
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 131073, 21, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Portals" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_layer = 0
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 131073, 16, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Obstacles" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_layer = 0
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 65536, 18, 0, 65537, 18, 0, 65538, 18, 0, 131072, 18, 0, 131074, 18, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Canopy" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_layer = 0
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( -65536, 15, 0, -65535, 15, 65540, -65534, 15, 1, 0, 15, 65536, 1, 15, 65540, 2, 15, 65537, 65536, 15, 131072, 65537, 15, 65538, 65538, 15, 131073, 131072, 19, 65538, 131074, 19, 65538 )
+__meta__ = {
+"_edit_lock_": true
+}

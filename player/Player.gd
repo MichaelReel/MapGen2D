@@ -11,6 +11,7 @@ onready var rays : Dictionary
 var paused = false
 
 func _ready():
+	print("Player Ready " + str(self))
 	rays = {
 		"0_1": $RayCastDown,
 		"0_-1": $RayCastUp,

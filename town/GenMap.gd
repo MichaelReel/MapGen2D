@@ -42,18 +42,21 @@ onready var possible_spawn_positions := Array()
 onready var player                   := $Player
 
 func _ready():
-	setup_reusables()
+	setup(base_seed)
+	
+func setup(town_seed : int):
+	setup_reusables(town_seed)
 	create_base_layer()
 	place_player()
 	
-func setup_reusables():
+func setup_reusables(seedy : int):
 	# Configure noise
-	base_noise.seed = base_seed
+	base_noise.seed = seedy
 	base_noise.octaves = noise_octaves
 	base_noise.period = noise_period
 	base_noise.persistence = noise_persistence
 	
-	ground_noise.seed = base_seed + 1
+	ground_noise.seed = seedy + 1
 	ground_noise.octaves = noise_octaves
 	ground_noise.period = noise_period
 	ground_noise.persistence = noise_persistence
