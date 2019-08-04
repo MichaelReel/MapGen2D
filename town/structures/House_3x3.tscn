@@ -1,9 +1,10 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/ModerateTileSet.tres" type="TileSet" id=1]
+[ext_resource path="res://town/structures/Gen_Portal_House_3x3.gd" type="Script" id=2]
+[ext_resource path="res://town/structures/House_3x3/External_Door.tscn" type="PackedScene" id=3]
 
-[node name="Structure03" type="Node2D"]
-visible = false
+[node name="House_3x3" type="Node2D"]
 
 [node name="Ground" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )
@@ -11,18 +12,7 @@ cell_size = Vector2( 16, 16 )
 collision_layer = 0
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( 131073, 21, 0 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Portals" type="TileMap" parent="."]
-tile_set = ExtResource( 1 )
-cell_size = Vector2( 16, 16 )
-collision_layer = 0
-collision_mask = 0
-format = 1
-tile_data = PoolIntArray( 131073, 16, 1 )
+tile_data = PoolIntArray( 131073, 12, 262145, 196608, 12, 327681, 196609, 12, 65537, 196610, 12, 327680 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -33,7 +23,7 @@ cell_size = Vector2( 16, 16 )
 collision_layer = 0
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( 65536, 18, 0, 65537, 18, 0, 65538, 18, 0, 131072, 18, 0, 131074, 18, 0 )
+tile_data = PoolIntArray( 65536, 18, 0, 65537, 18, 0, 65538, 18, 0, 131072, 18, 0, 131073, 21, 0, 131074, 18, 0 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -48,3 +38,9 @@ tile_data = PoolIntArray( -65536, 15, 0, -65535, 15, 65540, -65534, 15, 1, 0, 15
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="Gen_Portal" type="Node2D" parent="."]
+position = Vector2( 16, 32 )
+script = ExtResource( 2 )
+
+[node name="Door" parent="Gen_Portal" instance=ExtResource( 3 )]
