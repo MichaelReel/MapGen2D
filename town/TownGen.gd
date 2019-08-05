@@ -117,8 +117,8 @@ func create_base_layer(noise : Dictionary, node_2d : Node2D, town_size : Vector2
 					attempt_place_obstacle(x, y, noise["Ground"], GROUND_THRESHOLD, node_2d)
 	
 	# Call autotiling
-	map["Base"].update_bitmask_region()
-	map["Ground"].update_bitmask_region()
+	for tmap in map.values():
+		tmap.update_bitmask_region()
 
 func is_peak_point(x : int, y : int, noise : OpenSimplexNoise) -> bool:
 	# If this point is higher than the surrounding points
@@ -200,6 +200,7 @@ func merge_structure_into_map(offset : Vector2, structure : Node2D, root_node : 
 		elif sub_node.has_method("get_portal"):
 			# Get portal with generation hint and put it in the table
 			var portal = sub_node.get_portal(offset * SHARED_TILE_SIZE)
+			portal["sprite"].init_scene(root_node) 
 			portal_table.append(portal)
 			
 			# Add the portal scene to the world

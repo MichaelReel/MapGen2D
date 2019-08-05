@@ -10,3 +10,10 @@ func _on_Area2D_body_entered(body):
 		
 		# For now just do a rough transition to the 'root' map
 		SceneChanger.change_scene("res://town/GenMap.tscn")
+
+
+func _on_Area2D_body_shape_entered(body_id, body, body_shape, area_shape):
+	print("body_id: " + str(body_id))
+	print("body: " + str(body))
+	print("body_shape: " + str(body_shape))
+	print("area_shape: " + str(area_shape))

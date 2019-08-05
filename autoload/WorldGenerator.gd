@@ -1,6 +1,16 @@
 extends Node
 
+
 var town : PackedScene
+var room : PackedScene # Debug
+var portal_links : Dictionary
+
+func doorway_entered(door : Node2D, body: Node2D):
+	print ("Doorway " + str(door) + " entered, name: " + door.name + ", body: " + str(body))
+	
+	# Can we scene change here?
+	
+	SceneChanger.change_scene_to(portal_links[door.name]["target_scene"])
 
 func generate_world():
 	# Ugh, need to provide the seeds some other way
@@ -16,9 +26,25 @@ func generate_world():
 	for portal_dict in town_portals:
 		var sprite = portal_dict["sprite"]
 		var script_path = portal_dict["gen_script"]
-		# TODO: Use the gen_script to get a new packed scene, with return portal
+		
+		# Use the gen_script to get a new packed scene, with return portal
 		var gen = load(script_path).new()
 		if gen.has_method("generate"):
-			var gen_dict = gen.generate()
-		
-		# TODO: Create a link between the portal sprites
+			var room_seed := 1
+			var gen_dict : Dictionary = gen.generate(room_seed)
+			var room_scene : PackedScene = gen_dict["scene"]
+			room = room_scene
+			var room_portal : Node2D = gen_dict["return_portal"]
+			# Get inside of the doorway
+			var entry_coords : Vector2 = room_portal.position
+			if room_portal.has_node("Return"):
+				entry_coords += room_portal.get_node("Return").position
+			# Get outside of the doorway
+			var exit_coords : Vector2 = sprite.position
+			if sprite.has_node("Return"):
+				exit_coords += sprite.get_node("Return").position
+			
+			# Create a link between the portal sprites
+			print ("Linking portals: " + str(town) + "~" + str(exit_coords) + " -> " + str(room_scene) + "~" + str(entry_coords))
+			portal_links[sprite.name] = { "target_scene" : room_scene, "target_coords" : entry_coords }
+			portal_links[room_portal.name] = { "target_scene" : town, "target_coords" : exit_coords }

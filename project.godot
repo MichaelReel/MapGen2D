@@ -10,11 +10,17 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
+"class": "House3x3Gen",
+"language": "GDScript",
+"path": "res://town/structures/House_3x3/GenInterior.gd"
+}, {
+"base": "Node",
 "class": "TownGen",
 "language": "GDScript",
 "path": "res://town/TownGen.gd"
 } ]
 _global_script_class_icons={
+"House3x3Gen": "",
 "TownGen": ""
 }
 

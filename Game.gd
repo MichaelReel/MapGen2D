@@ -5,4 +5,3 @@ func _ready():
 	WorldGenerator.generate_world()
 	print("Town generated: " + str(WorldGenerator.town))
 	SceneChanger.change_scene_to(WorldGenerator.town)
-
