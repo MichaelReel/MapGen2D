@@ -14,7 +14,7 @@ const INTERACTION_Z_LAYER := 1
 
 var return_portal : Node2D
 
-func generate(room_seed, room_size : Vector2 = Vector2()) -> Dictionary:
+func generate(room_seed, room_size : Vector2 = Vector2(16, 16)) -> Dictionary:
 	
 	SHARED_TILE_SET = (load("res://assets/ModerateTileSet.tres") as TileSet)
 	
@@ -27,12 +27,6 @@ func generate(room_seed, room_size : Vector2 = Vector2()) -> Dictionary:
 	# Call autotiling
 	for tmap in map.values():
 		tmap.update_bitmask_region()
-	
-	var player := load("res://player/Player.tscn").instance() as Node2D
-	player.set_name("Player")
-	player.z_index = INTERACTION_Z_LAYER
-	node_2d.add_child(player, true)
-	player.owner = node_2d
 	
 	var scene := PackedScene.new()
 	assert(scene.pack(node_2d) == OK)
@@ -69,8 +63,8 @@ func create_base_layers(rseed : int, node_2d : Node2D, room_size : Vector2):
 				map["Obstacles"].set_cell(x, y, back_wall_tile)
 			map["Base"].set_cell(x, y, floor_tile)
 	
-	var mid_x : int = int(room_size.x) / 2
-	var y : int = room_size.y
+	var mid_x : int = int(room_size.x) / 2 - 1
+	var y : int = room_size.y - 1
 	for x in range (mid_x, mid_x + 1):
 		map["Obstacles"].set_cell(x, y, TileMap.INVALID_CELL)
 		

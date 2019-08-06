@@ -39,11 +39,11 @@ func generate_town(town_seed, town_size : Vector2 = Vector2(64,38)) -> Dictionar
 	var noise = setup_noise(town_seed)
 	create_base_layer(noise, node_2d, town_size)
 	
-	var player := load("res://player/Player.tscn").instance() as Node2D
-	player.set_name("Player")
-	player.z_index = INTERACTION_Z_LAYER
-	node_2d.add_child(player, true)
-	player.owner = node_2d
+#	var player := load("res://player/Player.tscn").instance() as Node2D
+#	player.set_name("Player")
+#	player.z_index = INTERACTION_Z_LAYER
+#	node_2d.add_child(player, true)
+#	player.owner = node_2d
 	
 	var scene := PackedScene.new()
 	assert(scene.pack(node_2d) == OK)

@@ -1,16 +1,29 @@
 extends Node
 
-
 var town : PackedScene
-var room : PackedScene # Debug
 var portal_links : Dictionary
 
 func doorway_entered(door : Node2D, body: Node2D):
 	print ("Doorway " + str(door) + " entered, name: " + door.name + ", body: " + str(body))
 	
-	# Can we scene change here?
-	
-	SceneChanger.change_scene_to(portal_links[door.name]["target_scene"])
+	if body.get_parent() is Player:
+		var player = body.get_parent()
+		player.pause()
+		# Can we scene change here?
+		player.visible = false
+		player.set_process(false)
+		door.set_process(false)
+		player.position = portal_links[door.name]["target_coords"]
+		SceneChanger.change_scene_to(portal_links[door.name]["target_scene"], player)
+		player.visible = true
+		door.set_process(true)
+		player.set_process(true)
+		player.pause(false)
+
+func generate_player() -> Player:
+	var player := load("res://player/Player.tscn").instance() as Player
+	player.set_name("Player")
+	return player
 
 func generate_world():
 	# Ugh, need to provide the seeds some other way
@@ -33,7 +46,6 @@ func generate_world():
 			var room_seed := 1
 			var gen_dict : Dictionary = gen.generate(room_seed)
 			var room_scene : PackedScene = gen_dict["scene"]
-			room = room_scene
 			var room_portal : Node2D = gen_dict["return_portal"]
 			# Get inside of the doorway
 			var entry_coords : Vector2 = room_portal.position

@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name Player
+
 export(float) var speed = 4.0
 export(int) var tile_size = 16
 

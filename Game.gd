@@ -4,4 +4,5 @@ func _ready():
 	# Create a starter node, and load it
 	WorldGenerator.generate_world()
 	print("Town generated: " + str(WorldGenerator.town))
-	SceneChanger.change_scene_to(WorldGenerator.town)
+	var player := WorldGenerator.generate_player()
+	SceneChanger.change_scene_to(WorldGenerator.town, player)
