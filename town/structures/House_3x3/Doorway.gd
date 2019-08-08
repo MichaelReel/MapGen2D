@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name Doorway
+
 func init_position(pos : Vector2):
 	position = pos
 	name = str(position)
@@ -10,5 +12,6 @@ func init_scene(parent : Node2D):
 	print("Setting (scene) name on " + str(self) + " to " + name)
 
 func _on_Area2D_body_entered(body):
-	print("External doorway " + str(self) + ", name: " + name + ", entered by " + str(body))
-	WorldGenerator.call_deferred("doorway_entered", self, body)
+	if body.get_parent() is Player:
+		print("External doorway " + str(self) + ", name: " + name + ", entered by " + str(body))
+		WorldGenerator.call_deferred("doorway_entered", self, body)

@@ -5,4 +5,4 @@ func _ready():
 	WorldGenerator.generate_world()
 	print("Town generated: " + str(WorldGenerator.town))
 	var player := WorldGenerator.generate_player()
-	SceneChanger.change_scene_to(WorldGenerator.town, player)
+	SceneChanger.change_scene_to(WorldGenerator.town, player, Vector2(16,16))

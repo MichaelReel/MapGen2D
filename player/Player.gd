@@ -8,9 +8,13 @@ export(int) var tile_size = 16
 var anim_sp_ratio = 0.5
 var axis_flip = false # This is to make diagonal movement 'slightly' less tedious
 
+# warning-ignore:unused_class_variable
 onready var body : KinematicBody2D = $KinematicBody2D
 onready var rays : Dictionary
-var paused = false
+
+func _enter_tree():
+	print ("Player entered tree")
+	set_process(true)
 
 func _ready():
 	print("Player Ready " + str(self))
@@ -22,8 +26,8 @@ func _ready():
 	}
 	$AnimationPlayer.playback_speed = speed * anim_sp_ratio
 
+# warning-ignore:unused_argument
 func _process(delta):
-	if paused: return
 	var dir : Vector2 = get_input_dir()
 	if dir != Vector2.ZERO:
 		var anim_name : String = str(int(dir.x)) + "_" + str(int(dir.y))
@@ -40,9 +44,6 @@ func _on_Tween_tween_started(object, key):
  
 func _on_Tween_tween_completed(object, key):
 	set_process(true)
-
-func pause(p : bool = true):
-	paused = p
 
 func get_input_dir() -> Vector2:
 	var dir = Vector2()

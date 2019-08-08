@@ -4,21 +4,12 @@ var town : PackedScene
 var portal_links : Dictionary
 
 func doorway_entered(door : Node2D, body: Node2D):
-	print ("Doorway " + str(door) + " entered, name: " + door.name + ", body: " + str(body))
-	
 	if body.get_parent() is Player:
+		var doorway := door as Doorway
+		print ("Doorway " + str(door) + " entered, name: " + door.name + ", body: " + str(body))
 		var player = body.get_parent()
-		player.pause()
-		# Can we scene change here?
-		player.visible = false
-		player.set_process(false)
-		door.set_process(false)
-		player.position = portal_links[door.name]["target_coords"]
-		SceneChanger.change_scene_to(portal_links[door.name]["target_scene"], player)
-		player.visible = true
-		door.set_process(true)
-		player.set_process(true)
-		player.pause(false)
+		SceneChanger.change_scene_to(portal_links[door.name]["target_scene"], player, portal_links[door.name]["target_coords"])
+		
 
 func generate_player() -> Player:
 	var player := load("res://player/Player.tscn").instance() as Player

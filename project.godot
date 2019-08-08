@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "Doorway",
+"language": "GDScript",
+"path": "res://town/structures/House_3x3/Doorway.gd"
+}, {
 "base": "Node",
 "class": "House3x3Gen",
 "language": "GDScript",
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://town/TownGen.gd"
 } ]
 _global_script_class_icons={
+"Doorway": "",
 "House3x3Gen": "",
 "Player": "",
 "TownGen": ""

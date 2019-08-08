@@ -2,12 +2,15 @@ extends CanvasLayer
 
 signal scene_changed()
 
-onready var animation_player := $AnimationPlayer
+onready var animation_player : AnimationPlayer = $AnimationPlayer
+var current_scene : PackedScene
 
-func change_scene(path : String, focus: Node2D, delay := 0.5):
-	change_scene_to(load(path), focus, delay)
-
-func change_scene_to(scene : PackedScene, focus: Node2D, delay := 0.5):
+func change_scene_to(scene : PackedScene, focus: Node2D, new_pos: Vector2, delay : float = 0.5):
+	# Remove player from the current scene (stop moving, dammit!)
+	var node_2d = get_tree().get_root()
+	if current_scene:
+		node_2d.call_deferred("remove_child", focus)
+	
 	# Fade out current scene
 	yield(get_tree().create_timer(delay), "timeout")
 	animation_player.play("fade")
@@ -15,9 +18,9 @@ func change_scene_to(scene : PackedScene, focus: Node2D, delay := 0.5):
 	
 	# Load new scene and insert player
 	assert(get_tree().change_scene_to(scene) == OK)
-	var node_2d = get_tree().get_root()
-	node_2d.add_child(focus, true)
-	focus.owner = node_2d
+	current_scene = scene
+	focus.position = new_pos
+	node_2d.call_deferred("add_child", focus, true)
 	
 	# Fade in new scene
 	animation_player.play_backwards("fade")

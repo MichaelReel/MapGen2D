@@ -39,12 +39,6 @@ func generate_town(town_seed, town_size : Vector2 = Vector2(64,38)) -> Dictionar
 	var noise = setup_noise(town_seed)
 	create_base_layer(noise, node_2d, town_size)
 	
-#	var player := load("res://player/Player.tscn").instance() as Node2D
-#	player.set_name("Player")
-#	player.z_index = INTERACTION_Z_LAYER
-#	node_2d.add_child(player, true)
-#	player.owner = node_2d
-	
 	var scene := PackedScene.new()
 	assert(scene.pack(node_2d) == OK)
 	
@@ -92,12 +86,9 @@ func create_base_layer(noise : Dictionary, node_2d : Node2D, town_size : Vector2
 	var base_water_tile   := SHARED_TILE_SET.find_tile_by_name(BASE_WATER_TILE_NAME)
 	var ground_dirt_tile  := SHARED_TILE_SET.find_tile_by_name(GROUND_DIRT_TILE_NAME)
 	
-	var dirty_debug_string = ""
-	
 	# Flood fill the tile map with the water tile to cover the screen size
 	for y in range(-1, town_size.y + 1):
 		for x in range(-1, town_size.x + 1):
-			dirty_debug_string += "(" + str(x) + "," + str(y) + ") = " + str(base_water_tile) + "\n"
 			# Draw islands (using noise)
 			if noise["Base"].get_noise_2d(x, y) > BASE_LAND_THRESHOLD:
 				map["Base"].set_cell(x, y, base_default_tile)
