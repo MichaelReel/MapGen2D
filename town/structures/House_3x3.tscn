@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/ModerateTileSet.tres" type="TileSet" id=1]
-[ext_resource path="res://town/structures/Gen_Portal_House_3x3.gd" type="Script" id=2]
+[ext_resource path="res://town/structures/House_3x3/GenDoorway.gd" type="Script" id=2]
 [ext_resource path="res://town/structures/House_3x3/External_Door.tscn" type="PackedScene" id=3]
 
 [node name="House_3x3" type="Node2D"]

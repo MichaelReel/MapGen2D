@@ -1,6 +1,6 @@
 extends Node
 
-class_name House5x5Gen
+class_name House3x3Gen
 
 const WALL_TILE_NAME := "Wall Top Auto"
 const FLOOR_TILE_NAME := "Underfloor Atlas"
@@ -14,7 +14,7 @@ const INTERACTION_Z_LAYER := 1
 
 var return_portal : Node2D
 
-func generate(room_seed, room_size : Vector2 = Vector2(16, 16)) -> Dictionary:
+func generate(room_seed, room_size : Vector2 = Vector2(32, 32)) -> Dictionary:
 	
 	SHARED_TILE_SET = (load("res://assets/ModerateTileSet.tres") as TileSet)
 	

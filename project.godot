@@ -12,10 +12,15 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "Doorway",
 "language": "GDScript",
-"path": "res://town/structures/House_3x3/Doorway.gd"
+"path": "res://town/structures/generic/Doorway.gd"
 }, {
 "base": "Node",
 "class": "House3x3Gen",
+"language": "GDScript",
+"path": "res://town/structures/House_5x5/GenInterior.gd"
+}, {
+"base": "Node",
+"class": "House5x5Gen",
 "language": "GDScript",
 "path": "res://town/structures/House_3x3/GenInterior.gd"
 }, {
@@ -32,6 +37,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Doorway": "",
 "House3x3Gen": "",
+"House5x5Gen": "",
 "Player": "",
 "TownGen": ""
 }
