@@ -5,7 +5,6 @@ var portal_links : Dictionary
 
 func doorway_entered(door : Node2D, body: Node2D):
 	if body.get_parent() is Player:
-		var doorway := door as Doorway
 		print ("Doorway " + str(door) + " entered, name: " + door.name + ", body: " + str(body))
 		var player = body.get_parent()
 		SceneChanger.change_scene_to(portal_links[door.name]["target_scene"], player, portal_links[door.name]["target_coords"])
@@ -16,9 +15,11 @@ func generate_player() -> Player:
 	player.set_name("Player")
 	return player
 
-func generate_world():
-	# Ugh, need to provide the seeds some other way
-	var town_seed := 1
+func generate_world(world_seed : int = 5):
+	# Generate seeds for each component randomly
+	var rand = RandomNumberGenerator.new()
+	rand.seed = world_seed
+	var town_seed : int = rand.randi()
 	
 	# Create a town map and get all portals
 	var town_generator := TownGen.new()
@@ -34,7 +35,7 @@ func generate_world():
 		# Use the gen_script to get a new packed scene, with return portal
 		var gen = load(script_path).new()
 		if gen.has_method("generate"):
-			var room_seed := 1
+			var room_seed : int = rand.randi()
 			var gen_dict : Dictionary = gen.generate(room_seed)
 			var room_scene : PackedScene = gen_dict["scene"]
 			var room_portal : Node2D = gen_dict["return_portal"]

@@ -14,16 +14,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://town/structures/generic/Doorway.gd"
 }, {
-"base": "Node",
-"class": "House3x3Gen",
-"language": "GDScript",
-"path": "res://town/structures/House_5x5/GenInterior.gd"
-}, {
-"base": "Node",
-"class": "House5x5Gen",
-"language": "GDScript",
-"path": "res://town/structures/House_3x3/GenInterior.gd"
-}, {
 "base": "Node2D",
 "class": "Player",
 "language": "GDScript",
@@ -36,8 +26,6 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Doorway": "",
-"House3x3Gen": "",
-"House5x5Gen": "",
 "Player": "",
 "TownGen": ""
 }
@@ -52,6 +40,7 @@ config/icon="res://icon.png"
 
 SceneChanger="*res://autoload/SceneChanger.tscn"
 WorldGenerator="*res://autoload/WorldGenerator.tscn"
+TilemapUtils="*res://autoload/TilemapUtils.tscn"
 
 [rendering]
 

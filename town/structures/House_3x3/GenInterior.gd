@@ -1,12 +1,10 @@
 extends Node
 
-class_name House5x5Gen
-
 const WALL_TILE_NAME := "Wall Top Auto"
 const FLOOR_TILE_NAME := "Underfloor Atlas"
 const BACK_WALL_TILE_NAME := "Brick"
 
-const BASE_TILEMAP_NAMES := ["Base", "Obstacles"]
+const BASE_TILEMAP_NAMES := ["Base", "Obstacles", "Canopy"]
 var map := {}
 var SHARED_TILE_SIZE := Vector2(16,16)
 var SHARED_TILE_SET : TileSet
@@ -14,15 +12,28 @@ const INTERACTION_Z_LAYER := 1
 
 var return_portal : Node2D
 
-func generate(room_seed, room_size : Vector2 = Vector2(16, 16)) -> Dictionary:
+var kitchen_pool := [
+	{"path": "res://town/structures/House_3x3/rooms/Kitchen_01.tscn", "instance": null},
+]
+
+var bedroom_pool := [
+	{"path": "res://town/structures/House_3x3/rooms/Bedroom_01.tscn", "instance": null},
+]
+
+
+func generate(room_seed, room_size : Vector2 = Vector2(13, 8)) -> Dictionary:
 	
 	SHARED_TILE_SET = (load("res://assets/ModerateTileSet.tres") as TileSet)
+	var rand = RandomNumberGenerator.new()
+	rand.seed = room_seed
+	
+	load_room_pools()
 	
 	var node_2d := Node2D.new()
 	create_bare_layers(node_2d)
 	
 	# TODO: Generate the interior of a small building
-	create_base_layers(room_seed, node_2d, room_size)
+	create_base_layers(rand.randi(), node_2d, room_size)
 	
 	# Call autotiling
 	for tmap in map.values():
@@ -34,6 +45,12 @@ func generate(room_seed, room_size : Vector2 = Vector2(16, 16)) -> Dictionary:
 	print ("Room generated: " + str(scene) + ", exit: " + str(return_portal))
 	
 	return { "scene" : scene, "return_portal" : return_portal }
+
+func load_room_pools():
+	for room in kitchen_pool:
+		room["instance"] = load(room["path"]).instance()
+	for room in bedroom_pool:
+		room["instance"] = load(room["path"]).instance()
 
 func create_bare_layers(node_2d : Node2D):
 	var z := 0
@@ -51,6 +68,9 @@ func create_bare_layers(node_2d : Node2D):
 
 func create_base_layers(rseed : int, node_2d : Node2D, room_size : Vector2):
 	
+	var rand = RandomNumberGenerator.new()
+	rand.seed = rseed
+	
 	var wall_tile := SHARED_TILE_SET.find_tile_by_name(WALL_TILE_NAME)
 	var floor_tile := SHARED_TILE_SET.find_tile_by_name(FLOOR_TILE_NAME)
 	var back_wall_tile := SHARED_TILE_SET.find_tile_by_name(BACK_WALL_TILE_NAME)
@@ -63,7 +83,21 @@ func create_base_layers(rseed : int, node_2d : Node2D, room_size : Vector2):
 				map["Obstacles"].set_cell(x, y, back_wall_tile)
 			map["Base"].set_cell(x, y, floor_tile)
 	
-	var mid_x : int = int(room_size.x) / 2 - 1
+	# Get a kitchen layout and bedroom layout and merge them into the room
+	var kitchen : Node2D = kitchen_pool[randi() % kitchen_pool.size()]["instance"]
+	var bedroom : Node2D = bedroom_pool[randi() % bedroom_pool.size()]["instance"]
+	
+	var kitchen_left : bool = true if rand.randi() % 2 == 1 else false
+	var kitchen_offset = Vector2(1,2)
+	var bedroom_offset = Vector2(1,2)
+	if kitchen_left:
+		bedroom_offset = Vector2(7,2)
+	else:
+		kitchen_offset = Vector2(7,2)
+	TilemapUtils.merge_structure_into_map(kitchen, node_2d, kitchen_offset)
+	TilemapUtils.merge_structure_into_map(bedroom, node_2d, bedroom_offset)
+	
+	var mid_x := 6
 	var y : int = room_size.y - 1
 	map["Obstacles"].set_cell(mid_x, y, TileMap.INVALID_CELL)
 		

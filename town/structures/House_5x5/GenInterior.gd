@@ -1,12 +1,10 @@
 extends Node
 
-class_name House3x3Gen
-
 const WALL_TILE_NAME := "Wall Top Auto"
 const FLOOR_TILE_NAME := "Underfloor Atlas"
 const BACK_WALL_TILE_NAME := "Brick"
 
-const BASE_TILEMAP_NAMES := ["Base", "Obstacles"]
+const BASE_TILEMAP_NAMES := ["Base", "Obstacles", "Canopy"]
 var map := {}
 var SHARED_TILE_SIZE := Vector2(16,16)
 var SHARED_TILE_SET : TileSet

@@ -132,7 +132,6 @@ tracks/0/keys = {
 }
 
 [node name="Player" type="Node2D"]
-z_index = 2
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_lock_": true

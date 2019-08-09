@@ -36,7 +36,11 @@ func generate_town(town_seed, town_size : Vector2 = Vector2(64,38)) -> Dictionar
 	var node_2d := Node2D.new()
 	create_bare_layers(node_2d)
 	
-	var noise = setup_noise(town_seed)
+	var rand = RandomNumberGenerator.new()
+	rand.seed = town_seed
+	
+	var noise = setup_noise(rand)
+	rand_seed(rand.randi())
 	create_base_layer(noise, node_2d, town_size)
 	
 	var scene := PackedScene.new()
@@ -50,7 +54,7 @@ func load_structure_pool():
 		structure["instance"] = load(structure["path"]).instance()
 
 func create_bare_layers(node_2d : Node2D):
-	var z := 0
+	var z := -1
 	for layer in BASE_TILEMAP_NAMES:
 		var tilemap := TileMap.new()
 		tilemap.set_name(layer)
@@ -63,16 +67,16 @@ func create_bare_layers(node_2d : Node2D):
 		tilemap.owner = node_2d
 		map[layer] = tilemap
 
-func setup_noise(seedy : int):
+func setup_noise(rand : RandomNumberGenerator):
 	var noise := { "Base" : OpenSimplexNoise.new(), "Ground" : OpenSimplexNoise.new() }
 	
 	# Configure noise
-	noise["Base"].seed = seedy
+	noise["Base"].seed = rand.randi()
 	noise["Base"].octaves = NOISE_OCTAVES
 	noise["Base"].period = NOISE_PERIOD
 	noise["Base"].persistence = NOISE_PERSISTENCE
 	
-	noise["Ground"].seed = seedy + 1
+	noise["Ground"].seed = rand.randi()
 	noise["Ground"].octaves = NOISE_OCTAVES
 	noise["Ground"].period = NOISE_PERIOD
 	noise["Ground"].persistence = NOISE_PERSISTENCE
@@ -81,7 +85,6 @@ func setup_noise(seedy : int):
 
 func create_base_layer(noise : Dictionary, node_2d : Node2D, town_size : Vector2):
 	
-	# Seems like you could use SHARED_TILE_SET here...
 	var base_default_tile := SHARED_TILE_SET.find_tile_by_name(BASE_DEFAULT_TILE_NAME)
 	var base_water_tile   := SHARED_TILE_SET.find_tile_by_name(BASE_WATER_TILE_NAME)
 	var ground_dirt_tile  := SHARED_TILE_SET.find_tile_by_name(GROUND_DIRT_TILE_NAME)
@@ -159,7 +162,9 @@ func attempt_place_obstacle(x : int, y : int, noise : OpenSimplexNoise, threshol
 	##
 	
 	var template_node : Node2D = get_template_that_will_fit(dx_max * 2 + 1, dy_max * 2 + 1)
-	merge_structure_into_map(Vector2(x - dx_max, y - dy_max), template_node, node_2d)
+	var merge_dict : Dictionary = TilemapUtils.merge_structure_into_map(template_node, node_2d, Vector2(x - dx_max, y - dy_max))
+	if merge_dict.has("portal_list"):
+		portal_table += merge_dict["portal_list"]
 
 func get_template_that_will_fit(width, height) -> Node2D:
 	structure_pool.shuffle()
@@ -170,32 +175,3 @@ func get_template_that_will_fit(width, height) -> Node2D:
 	
 	assert(false)
 	return null
-
-func merge_structure_into_map(offset : Vector2, structure : Node2D, root_node : Node2D):
-	# For each tilemap in struture, copy it into the similarly name root tilemap
-	for sub_node in structure.get_children():
-		if sub_node is TileMap:
-			# What's the name, and is there one on the root?
-			var main_node = map[sub_node.name] if map.has(sub_node.name) else null
-			if main_node is TileMap:
-				# Copy sub_node into main_node
-				var cell_list = (sub_node as TileMap).get_used_cells()
-				for cellv in cell_list:
-					var tile_id : int = sub_node.get_cellv(cellv)
-					var flip_x : bool = sub_node.is_cell_x_flipped(cellv.x, cellv.y)
-					var flip_y : bool = sub_node.is_cell_y_flipped(cellv.x, cellv.y)
-					var transpose : bool = sub_node.is_cell_transposed(cellv.x, cellv.y)
-					var autov : Vector2 = sub_node.get_cell_autotile_coord(cellv.x, cellv.y)
-					var in_pos : Vector2 = cellv + offset
-					main_node.set_cell(in_pos.x, in_pos.y, tile_id, flip_x, flip_y, transpose, autov)
-		elif sub_node.has_method("get_portal"):
-			# Get portal with generation hint and put it in the table
-			var portal = sub_node.get_portal(offset * SHARED_TILE_SIZE)
-			portal["sprite"].init_scene(root_node) 
-			portal_table.append(portal)
-			
-			# Add the portal scene to the world
-			portal["sprite"].z_index = INTERACTION_Z_LAYER
-			root_node.add_child(portal["sprite"])
-			portal["sprite"].owner = root_node
-			

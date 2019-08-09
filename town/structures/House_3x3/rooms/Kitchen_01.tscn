@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/ModerateTileSet.tres" type="TileSet" id=1]
+
+[node name="Kitchen" type="Node2D"]
+
+[node name="Base" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_layer = 0
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 0, 23, 1, 1, 23, 1, 2, 23, 1, 3, 23, 1, 4, 23, 1, 65536, 23, 1, 65537, 23, 1, 65538, 23, 1, 65539, 23, 1, 65540, 23, 1, 131072, 23, 1, 131073, 23, 1, 131074, 23, 1, 131075, 23, 1, 131076, 23, 1, 196608, 23, 1, 196609, 23, 1, 196610, 23, 1, 196611, 23, 1, 196612, 23, 1, 262144, 23, 1, 262145, 23, 1, 262146, 23, 1, 262147, 23, 1, 262148, 23, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Obstacles" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_layer = 0
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 0, 25, 2, 2, 25, 0, 3, 25, 262144, 196609, 25, 1, 196610, 25, 2, 196611, 25, 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Canopy" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_layer = 0
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( -65536, 25, 262147, -65535, 25, 196611, -65534, 25, 65538, -65533, 25, 196608, 131072, 27, 196609, 131073, 25, 131075, 131074, 25, 65537, 131075, 25, 131073, 131076, 27, 196608, 196608, 27, 196609, 196612, 27, 196608 )
+__meta__ = {
+"_edit_lock_": true
+}
