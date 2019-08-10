@@ -15,3 +15,7 @@ func _on_Area2D_body_entered(body):
 	if body.get_parent() is Player:
 		print("External doorway " + str(self) + ", name: " + name + ", entered by " + str(body))
 		WorldGenerator.call_deferred("doorway_entered", self, body)
+		open()
+
+func open():
+	$AnimationPlayer.play("open")

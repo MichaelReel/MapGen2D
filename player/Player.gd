@@ -14,7 +14,6 @@ onready var rays : Dictionary
 onready var frozen : bool = true
 
 func _enter_tree():
-	print ("Player entered tree")
 	set_process(true)
 
 func _ready():

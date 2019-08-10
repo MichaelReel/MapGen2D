@@ -42,8 +42,6 @@ func generate(room_seed, room_size : Vector2 = Vector2(13, 8)) -> Dictionary:
 	var scene := PackedScene.new()
 	assert(scene.pack(node_2d) == OK)
 	
-	print ("Room generated: " + str(scene) + ", exit: " + str(return_portal))
-	
 	return { "scene" : scene, "return_portal" : return_portal, "scene_bounds" : Rect2(Vector2(), room_size) }
 
 func load_room_pools():
@@ -102,7 +100,7 @@ func create_base_layers(rseed : int, node_2d : Node2D, room_size : Vector2):
 	map["Obstacles"].set_cell(mid_x, y, TileMap.INVALID_CELL)
 		
 	# Put the return portal at the relevant location
-	return_portal = load("res://town/structures/House_3x3/Internal_Door.tscn").instance() as Node2D
+	return_portal = load("res://town/structures/generic/Door.tscn").instance() as Node2D
 	return_portal.set_name("To_Outside")
 	return_portal.z_index = INTERACTION_Z_LAYER
 	return_portal.init_position(Vector2(mid_x, y) * SHARED_TILE_SIZE)
