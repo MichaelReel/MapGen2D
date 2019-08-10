@@ -12,7 +12,7 @@ const INTERACTION_Z_LAYER := 1
 
 var return_portal : Node2D
 
-func generate(room_seed, room_size : Vector2 = Vector2(32, 32)) -> Dictionary:
+func generate(room_seed, room_size : Vector2 = Vector2(19, 12)) -> Dictionary:
 	
 	SHARED_TILE_SET = (load("res://assets/ModerateTileSet.tres") as TileSet)
 	
@@ -31,7 +31,7 @@ func generate(room_seed, room_size : Vector2 = Vector2(32, 32)) -> Dictionary:
 	
 	print ("Room generated: " + str(scene) + ", exit: " + str(return_portal))
 	
-	return { "scene" : scene, "return_portal" : return_portal }
+	return { "scene" : scene, "return_portal" : return_portal, "scene_bounds" : Rect2(Vector2(), room_size) }
 
 func create_bare_layers(node_2d : Node2D):
 	var z := 0
@@ -53,16 +53,16 @@ func create_base_layers(rseed : int, node_2d : Node2D, room_size : Vector2):
 	var floor_tile := SHARED_TILE_SET.find_tile_by_name(FLOOR_TILE_NAME)
 	var back_wall_tile := SHARED_TILE_SET.find_tile_by_name(BACK_WALL_TILE_NAME)
 	
-	for y in range(0, room_size.y):
-		for x in range(0, room_size.x):
-			if y == 0 or x == 0 or y == (room_size.y - 1) or x == (room_size.x - 1):
+	for y in range(0, room_size.y + 1):
+		for x in range(0, room_size.x + 1):
+			if y == 0 or x == 0 or y == (room_size.y) or x == (room_size.x):
 				map["Obstacles"].set_cell(x, y, wall_tile)
 			elif y == 1:
 				map["Obstacles"].set_cell(x, y, back_wall_tile)
 			map["Base"].set_cell(x, y, floor_tile)
 	
-	var mid_x : int = int(room_size.x) / 2 - 1
-	var y : int = room_size.y - 1
+	var mid_x : int = int(room_size.x) / 2
+	var y : int = room_size.y
 	map["Obstacles"].set_cell(mid_x, y, TileMap.INVALID_CELL)
 		
 	# Put the return portal at the relevant location

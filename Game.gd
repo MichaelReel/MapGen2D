@@ -6,10 +6,10 @@ func _ready():
 	print("Town generated: " + str(WorldGenerator.town))
 	var player := WorldGenerator.generate_player()
 	
-	var player_start := Vector2(0,0)
+	var player_start : Dictionary
 	for portkey in WorldGenerator.portal_links.keys():
 		if WorldGenerator.portal_links[portkey]["target_scene"] == WorldGenerator.town:
-			player_start = WorldGenerator.portal_links[portkey]["target_coords"]
+			player_start = WorldGenerator.portal_links[portkey]
 			break
 	
-	SceneChanger.change_scene_to(WorldGenerator.town, player, player_start)
+	SceneChanger.change_scene_to(player_start, player)

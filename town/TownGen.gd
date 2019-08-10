@@ -47,7 +47,7 @@ func generate_town(town_seed, town_size : Vector2 = Vector2(64,38)) -> Dictionar
 	assert(scene.pack(node_2d) == OK)
 	
 	# Pop the scene and the portal table into a return dictionary
-	return { "scene" : scene, "portals" : portal_table }
+	return { "scene" : scene, "portals" : portal_table, "scene_bounds" : Rect2(Vector2(), town_size) }
 
 func load_structure_pool():
 	for structure in structure_pool:
@@ -173,5 +173,6 @@ func get_template_that_will_fit(width, height) -> Node2D:
 		if width >= structure["x"] and height >= structure["y"]:
 			return structure["instance"]
 	
+	# Shouldn't get here
 	assert(false)
 	return null

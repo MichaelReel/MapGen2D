@@ -44,7 +44,7 @@ func generate(room_seed, room_size : Vector2 = Vector2(13, 8)) -> Dictionary:
 	
 	print ("Room generated: " + str(scene) + ", exit: " + str(return_portal))
 	
-	return { "scene" : scene, "return_portal" : return_portal }
+	return { "scene" : scene, "return_portal" : return_portal, "scene_bounds" : Rect2(Vector2(), room_size) }
 
 func load_room_pools():
 	for room in kitchen_pool:

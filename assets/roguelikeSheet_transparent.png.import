@@ -15,12 +15,12 @@ dest_files=[ "res://.import/roguelikeSheet_transparent.png-cd3a50438593de754089d
 [params]
 
 compress/mode=0
-compress/lossy_quality=0.7
+compress/lossy_quality=1
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

@@ -11,6 +11,7 @@ var axis_flip = false # This is to make diagonal movement 'slightly' less tediou
 # warning-ignore:unused_class_variable
 onready var body : KinematicBody2D = $KinematicBody2D
 onready var rays : Dictionary
+onready var frozen : bool = true
 
 func _enter_tree():
 	print ("Player entered tree")
@@ -31,7 +32,7 @@ func _process(delta):
 	var dir : Vector2 = get_input_dir()
 	if dir != Vector2.ZERO:
 		var anim_name : String = str(int(dir.x)) + "_" + str(int(dir.y))
-		if (rays[anim_name] as RayCast2D).is_colliding():
+		if (rays[anim_name] as RayCast2D).is_colliding() or frozen:
 			anim_name += "_look"
 		else:
 			var target : Vector2 = position + dir * tile_size
@@ -44,6 +45,12 @@ func _on_Tween_tween_started(object, key):
  
 func _on_Tween_tween_completed(object, key):
 	set_process(true)
+	
+func freeze():
+	frozen = true
+
+func thaw():
+	frozen = false
 
 func get_input_dir() -> Vector2:
 	var dir = Vector2()
@@ -61,3 +68,9 @@ func get_input_dir() -> Vector2:
 
 func has_collided() -> bool:
 	return true if body.get_collider() else false
+
+func set_view_tile_bounds(tile_bounds : Rect2):
+	$Camera2D.limit_left   = (tile_bounds.position.x * TilemapUtils.SHARED_TILE_SIZE.x) - (TilemapUtils.SHARED_TILE_SIZE.x / 2)
+	$Camera2D.limit_right  = (tile_bounds.end.x * TilemapUtils.SHARED_TILE_SIZE.x) + TilemapUtils.SHARED_TILE_SIZE.x
+	$Camera2D.limit_top    = (tile_bounds.position.y * TilemapUtils.SHARED_TILE_SIZE.y) - (TilemapUtils.SHARED_TILE_SIZE.y / 2)
+	$Camera2D.limit_bottom = (tile_bounds.end.y * TilemapUtils.SHARED_TILE_SIZE.y) + TilemapUtils.SHARED_TILE_SIZE.y

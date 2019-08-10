@@ -1,6 +1,6 @@
 extends Node
 
-const INTERACTION_Z_LAYER := 2
+const INTERACTION_Z_LAYER := 1
 const SHARED_TILE_SIZE := Vector2(16, 16)
 onready var SHARED_TILE_SET = (load("res://assets/ModerateTileSet.tres") as TileSet)
 
