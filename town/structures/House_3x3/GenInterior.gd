@@ -6,9 +6,6 @@ const BACK_WALL_TILE_NAME := "Brick"
 
 const BASE_TILEMAP_NAMES := ["Base", "Obstacles", "Canopy"]
 var map := {}
-var SHARED_TILE_SIZE := Vector2(16,16)
-var SHARED_TILE_SET : TileSet
-const INTERACTION_Z_LAYER := 1
 
 var return_portal : Node2D
 
@@ -22,8 +19,6 @@ var bedroom_pool := [
 
 
 func generate(room_seed, room_size : Vector2 = Vector2(13, 8)) -> Dictionary:
-	
-	SHARED_TILE_SET = (load("res://assets/ModerateTileSet.tres") as TileSet)
 	var rand = RandomNumberGenerator.new()
 	rand.seed = room_seed
 	
@@ -32,7 +27,7 @@ func generate(room_seed, room_size : Vector2 = Vector2(13, 8)) -> Dictionary:
 	var node_2d := Node2D.new()
 	create_bare_layers(node_2d)
 	
-	# TODO: Generate the interior of a small building
+	# Generate the interior of a small building
 	create_base_layers(rand.randi(), node_2d, room_size)
 	
 	# Call autotiling
@@ -55,8 +50,8 @@ func create_bare_layers(node_2d : Node2D):
 	for layer in BASE_TILEMAP_NAMES:
 		var tilemap := TileMap.new()
 		tilemap.set_name(layer)
-		tilemap.cell_size = SHARED_TILE_SIZE
-		tilemap.tile_set = SHARED_TILE_SET
+		tilemap.cell_size = TilemapUtils.SHARED_TILE_SIZE
+		tilemap.tile_set = TilemapUtils.SHARED_TILE_SET
 		tilemap.format = 1 # Appears to be important for loading the tilemap from a PackedScene
 		tilemap.z_index = z
 		z += 1
@@ -69,9 +64,9 @@ func create_base_layers(rseed : int, node_2d : Node2D, room_size : Vector2):
 	var rand = RandomNumberGenerator.new()
 	rand.seed = rseed
 	
-	var wall_tile := SHARED_TILE_SET.find_tile_by_name(WALL_TILE_NAME)
-	var floor_tile := SHARED_TILE_SET.find_tile_by_name(FLOOR_TILE_NAME)
-	var back_wall_tile := SHARED_TILE_SET.find_tile_by_name(BACK_WALL_TILE_NAME)
+	var wall_tile := TilemapUtils.SHARED_TILE_SET.find_tile_by_name(WALL_TILE_NAME)
+	var floor_tile := TilemapUtils.SHARED_TILE_SET.find_tile_by_name(FLOOR_TILE_NAME)
+	var back_wall_tile := TilemapUtils.SHARED_TILE_SET.find_tile_by_name(BACK_WALL_TILE_NAME)
 	
 	for y in range(0, room_size.y):
 		for x in range(0, room_size.x):
@@ -102,8 +97,8 @@ func create_base_layers(rseed : int, node_2d : Node2D, room_size : Vector2):
 	# Put the return portal at the relevant location
 	return_portal = load("res://town/structures/generic/Door.tscn").instance() as Node2D
 	return_portal.set_name("To_Outside")
-	return_portal.z_index = INTERACTION_Z_LAYER
-	return_portal.init_position(Vector2(mid_x, y) * SHARED_TILE_SIZE)
+	return_portal.z_index = TilemapUtils.INTERACTION_Z_LAYER
+	return_portal.init_position(Vector2(mid_x, y) * TilemapUtils.SHARED_TILE_SIZE)
 	return_portal.init_scene(node_2d)
 	node_2d.add_child(return_portal, true)
 	return_portal.owner = node_2d

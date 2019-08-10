@@ -2,7 +2,7 @@ extends Node
 
 const INTERACTION_Z_LAYER := 1
 const SHARED_TILE_SIZE := Vector2(16, 16)
-onready var SHARED_TILE_SET = (load("res://assets/ModerateTileSet.tres") as TileSet)
+onready var SHARED_TILE_SET : TileSet = (load("res://assets/ModerateTileSet.tres") as TileSet)
 
 func merge_structure_into_map(structure : Node2D, map : Node2D, offset : Vector2 = Vector2()) -> Dictionary:
 	# Setup return table for specially placed elements
