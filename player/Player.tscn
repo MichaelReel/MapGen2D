@@ -140,6 +140,8 @@ __meta__ = {
 [node name="Tween" type="Tween" parent="."]
 
 [node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+collision_layer = 3
+collision_mask = 3
 __meta__ = {
 "_edit_lock_": true
 }
@@ -175,6 +177,7 @@ anims/1_0_look = SubResource( 9 )
 position = Vector2( 8, 16 )
 enabled = true
 cast_to = Vector2( 0, 8 )
+collide_with_areas = true
 __meta__ = {
 "_edit_lock_": true
 }
@@ -184,6 +187,7 @@ position = Vector2( 0, 8 )
 rotation = 1.5708
 enabled = true
 cast_to = Vector2( 0, 8 )
+collide_with_areas = true
 __meta__ = {
 "_edit_lock_": true
 }
@@ -193,6 +197,7 @@ position = Vector2( 8, 0 )
 rotation = 3.14159
 enabled = true
 cast_to = Vector2( 0, 8 )
+collide_with_areas = true
 __meta__ = {
 "_edit_lock_": true
 }
@@ -202,6 +207,7 @@ position = Vector2( 16, 8 )
 rotation = -1.5708
 enabled = true
 cast_to = Vector2( 0, 8 )
+collide_with_areas = true
 __meta__ = {
 "_edit_lock_": true
 }

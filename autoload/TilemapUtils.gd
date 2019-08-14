@@ -34,7 +34,17 @@ func merge_structure_into_map(structure : Node2D, map : Node2D, offset : Vector2
 			return_dict["portal_list"].append(portal)
 			
 			# Add the portal scene to the world
-			portal["sprite"].z_index = INTERACTION_Z_LAYER
+			portal["sprite"].z_index = TilemapUtils.INTERACTION_Z_LAYER
 			map.add_child(portal["sprite"])
 			portal["sprite"].owner = map
+		elif sub_node.name == "Items":
+			# Just copy whatever it in here into the room
+			for item_node in sub_node.get_children():
+				var item_inst = load(item_node.filename).instance()
+				item_inst.z_index = TilemapUtils.INTERACTION_Z_LAYER
+				item_inst.position = (offset * SHARED_TILE_SIZE) + item_node.position
+				map.add_child(item_inst)
+				item_inst.owner = map
+				
+				
 	return return_dict

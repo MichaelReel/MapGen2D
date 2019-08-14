@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/ModerateTileSet.tres" type="TileSet" id=1]
 
-[node name="Kitchen" type="Node2D"]
+[node name="Bedroom" type="Node2D"]
 
 [node name="Base" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )
@@ -21,7 +21,7 @@ cell_size = Vector2( 16, 16 )
 collision_layer = 0
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( 65538, 27, 196617, 131074, 27, 262157, 131075, 27, 196620, 196608, 27, 131074 )
+tile_data = PoolIntArray( 1, 27, 196613, 2, 27, 327693, 3, 27, 196613 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -32,7 +32,7 @@ cell_size = Vector2( 16, 16 )
 collision_layer = 0
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( -65536, 28, 65536, -65534, 19, 196615, -65532, 29, 0, 131074, 26, 6, 196610, 27, 327690 )
+tile_data = PoolIntArray( -65536, 28, 65536, -65534, 19, 196615, -65532, 29, 0 )
 __meta__ = {
 "_edit_lock_": true
 }
