@@ -7,4 +7,4 @@ func get_portal(offset: Vector2) -> Dictionary:
 	# Clone door
 	var new_sprite = $Door.duplicate(DUPLICATE_SIGNALS + DUPLICATE_SCRIPTS + DUPLICATE_USE_INSTANCING)
 	new_sprite.init_position(position + offset)
-	return { "sprite" : new_sprite, "gen_script" : "res://town/structures/House_3x3/GenInterior.gd" }
+	return { "sprite" : new_sprite, "gen_script" : "res://map/structures/House_5x5/GenInterior.gd" }

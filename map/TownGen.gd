@@ -21,9 +21,9 @@ const PORTAL_LAYER_NAME := "Portals"
 const INTERACTION_Z_LAYER := 2
 
 var structure_pool := [
-	{"x": 1, "y":1, "path": "res://town/structures/Default.tscn", "instance": null},
-	{"x": 3, "y":3, "path": "res://town/structures/House_5x5.tscn", "instance": null},
-	{"x": 5, "y":5, "path": "res://town/structures/House_3x3.tscn", "instance": null},
+	{"x": 1, "y":1, "path": "res://map/structures/Default.tscn", "instance": null},
+	{"x": 3, "y":3, "path": "res://map/structures/House_5x5.tscn", "instance": null},
+	{"x": 5, "y":5, "path": "res://map/structures/House_3x3.tscn", "instance": null},
 ]
 
 var portal_table := []

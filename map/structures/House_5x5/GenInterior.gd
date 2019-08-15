@@ -10,11 +10,11 @@ var map := {}
 var return_portal : Node2D
 
 var kitchen_pool := [
-	{"path": "res://town/structures/House_5x5/rooms/Kitchen_01.tscn", "instance": null},
+	{"path": "res://map/structures/House_5x5/rooms/Kitchen_01.tscn", "instance": null},
 ]
 
 var bedroom_pool := [
-	{"path": "res://town/structures/House_5x5/rooms/Bedroom_01.tscn", "instance": null},
+	{"path": "res://map/structures/House_5x5/rooms/Bedroom_01.tscn", "instance": null},
 ]
 
 func generate(room_seed, room_size : Vector2 = Vector2(16, 9)) -> Dictionary:
@@ -94,7 +94,7 @@ func create_base_layers(rseed : int, node_2d : Node2D, room_size : Vector2):
 	map["Obstacles"].set_cell(mid_x, y, TileMap.INVALID_CELL)
 		
 	# Put the return portal at the relevant location
-	return_portal = load("res://town/structures/generic/Door.tscn").instance() as Node2D
+	return_portal = load("res://items/Door.tscn").instance() as Node2D
 	return_portal.set_name("To_Outside")
 	return_portal.z_index = TilemapUtils.INTERACTION_Z_LAYER
 	return_portal.init_position(Vector2(mid_x, y) * TilemapUtils.SHARED_TILE_SIZE)

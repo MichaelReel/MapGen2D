@@ -1,7 +1,10 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/ModerateTileSet.tres" type="TileSet" id=1]
-[ext_resource path="res://town/structures/generic/Chest.tscn" type="PackedScene" id=2]
+[ext_resource path="res://items/Chest.tscn" type="PackedScene" id=2]
+
+
+
 
 [node name="Bedroom" type="Node2D"]
 

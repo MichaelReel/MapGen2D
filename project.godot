@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "Doorway",
 "language": "GDScript",
-"path": "res://town/structures/generic/Doorway.gd"
+"path": "res://items/Doorway.gd"
 }, {
 "base": "Node2D",
 "class": "Player",
@@ -22,7 +22,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "TownGen",
 "language": "GDScript",
-"path": "res://town/TownGen.gd"
+"path": "res://map/TownGen.gd"
 } ]
 _global_script_class_icons={
 "Doorway": "",

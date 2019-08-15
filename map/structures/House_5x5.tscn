@@ -1,8 +1,11 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/ModerateTileSet.tres" type="TileSet" id=1]
-[ext_resource path="res://town/structures/House_5x5/GenDoorway.gd" type="Script" id=2]
-[ext_resource path="res://town/structures/generic/Door.tscn" type="PackedScene" id=3]
+[ext_resource path="res://map/structures/House_5x5/GenDoorway.gd" type="Script" id=2]
+[ext_resource path="res://items/Door.tscn" type="PackedScene" id=3]
+
+
+
 
 [node name="House_5x5" type="Node2D"]
 

@@ -35,6 +35,8 @@ func _process(delta):
 			$Tween.interpolate_property(self, "position", position, target, 1.0 / speed, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 			$Tween.start()
 		else:
+			var collision_node = get_collider_object(anim_name)
+			print (str(collision_node))
 			anim_name += "_look"
 			
 		$AnimationPlayer.play(anim_name)
@@ -53,7 +55,20 @@ func can_move(anim_name : String):
 		return false
 	if anim_name == "0_1" and position.y + (1 * TilemapUtils.SHARED_TILE_SIZE.y) >= bounds.end.y:
 		return false
+		
 	return true
+
+func get_collider_object(anim_name : String) -> Object:
+	# Return an Item if it's an item that can be used
+	var obj = null
+	var ray : RayCast2D = rays[anim_name]
+	if ray.is_colliding():
+		var collider = ray.get_collider()
+		if not collider is TileMap:
+			var parent = collider.get_parent()
+			if parent.has_method("use"):
+				obj = parent
+	return obj
 
 func _on_Tween_tween_started(object, key):
 	set_process(false)
