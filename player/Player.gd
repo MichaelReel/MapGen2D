@@ -7,6 +7,7 @@ export(float) var speed = 4.0
 var anim_sp_ratio = 0.5
 var axis_flip = false # This is to make diagonal movement 'slightly' less tedious
 var bounds : Rect2 = Rect2()
+var facing : Vector2 = Vector2()
 
 # warning-ignore:unused_class_variable
 onready var body : KinematicBody2D = $KinematicBody2D
@@ -21,7 +22,7 @@ func _ready():
 		"0_1": $RayCastDown,
 		"0_-1": $RayCastUp,
 		"-1_0": $RayCastLeft,
-		"1_0": $RayCastRight
+		"1_0": $RayCastRight,
 	}
 	$AnimationPlayer.playback_speed = speed * anim_sp_ratio
 
@@ -35,11 +36,24 @@ func _process(delta):
 			$Tween.interpolate_property(self, "position", position, target, 1.0 / speed, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 			$Tween.start()
 		else:
-			var collision_node = get_collider_object(anim_name)
-			print (str(collision_node))
+			# If we're walking into an item, give it a bump
+			var collision_item = get_collider_item(anim_name)
+			if collision_item and collision_item.has_method("bump"):
+				collision_item.bump(dir)
+			print (str(collision_item))
+			
+			# Play the "look" only animation
 			anim_name += "_look"
 			
 		$AnimationPlayer.play(anim_name)
+		facing = dir
+	
+	# Are we trying to "use" something?
+	if Input.is_action_just_pressed("ui_select"):
+		var facing_name : String = str(int(facing.x)) + "_" + str(int(facing.y))
+		var collision_item = get_collider_item(facing_name)
+		if collision_item:
+			collision_item.use(facing)
 
 func can_move(anim_name : String):
 	var ray : RayCast2D = rays[anim_name]
@@ -58,7 +72,7 @@ func can_move(anim_name : String):
 		
 	return true
 
-func get_collider_object(anim_name : String) -> Object:
+func get_collider_item(anim_name : String) -> Object:
 	# Return an Item if it's an item that can be used
 	var obj = null
 	var ray : RayCast2D = rays[anim_name]
@@ -70,9 +84,13 @@ func get_collider_object(anim_name : String) -> Object:
 				obj = parent
 	return obj
 
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
 func _on_Tween_tween_started(object, key):
 	set_process(false)
  
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
 func _on_Tween_tween_completed(object, key):
 	set_process(true)
 	
