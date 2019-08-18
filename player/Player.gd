@@ -11,20 +11,24 @@ var facing : Vector2 = Vector2()
 
 # warning-ignore:unused_class_variable
 onready var body : KinematicBody2D = $KinematicBody2D
-onready var rays : Dictionary
-onready var frozen : bool = true
-
-func _enter_tree():
-	set_process(true)
-
-func _ready():
-	rays = {
+onready var rays : Dictionary = {
 		"0_1": $RayCastDown,
 		"0_-1": $RayCastUp,
 		"-1_0": $RayCastLeft,
 		"1_0": $RayCastRight,
 	}
-	$AnimationPlayer.playback_speed = speed * anim_sp_ratio
+onready var frozen : bool = true
+onready var anim : AnimationPlayer = $AnimationPlayer
+onready var inv : Node2D = $Inventory
+
+func _enter_tree():
+	print("Player _enter_tree")
+	set_process(true)
+
+func _ready():
+	print("Player _ready")
+	anim.playback_speed = speed * anim_sp_ratio
+	inv.visible = false
 
 # warning-ignore:unused_argument
 func _process(delta):
@@ -45,7 +49,7 @@ func _process(delta):
 			# Play the "look" only animation
 			anim_name += "_look"
 			
-		$AnimationPlayer.play(anim_name)
+		anim.play(anim_name)
 		facing = dir
 	
 	# Are we trying to "use" something?
@@ -53,7 +57,15 @@ func _process(delta):
 		var facing_name : String = str(int(facing.x)) + "_" + str(int(facing.y))
 		var collision_item = get_collider_item(facing_name)
 		if collision_item:
-			collision_item.use(facing)
+			collision_item.use(facing, self)
+	
+	if Input.is_action_just_pressed("inv_show"):
+		if inv.visible == false:
+			print("Show Inventory")
+			show_inventory()
+		else:
+			print("Hide Inventory")
+			hide_inventory()
 
 func can_move(anim_name : String):
 	var ray : RayCast2D = rays[anim_name]
@@ -124,3 +136,18 @@ func set_view_tile_bounds(tile_bounds : Rect2):
 	$Camera2D.limit_right  = bounds.end.x
 	$Camera2D.limit_top    = bounds.position.y
 	$Camera2D.limit_bottom = bounds.end.y
+
+func show_opposite_inventory_grid(inv_grid : InventoryGrid):
+	print("Setting opposite inventory " + str(inv_grid))
+	# Add the opposite inventory_grid to the inventory display and show the inventory
+	inv.set_opposite_inventory_grid(inv_grid)
+	show_inventory()
+
+func show_inventory():
+	freeze()
+	inv.visible = true
+
+func hide_inventory():
+	inv.visible = false
+	inv.set_opposite_inventory_grid(null)
+	thaw()
