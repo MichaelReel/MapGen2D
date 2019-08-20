@@ -28,5 +28,5 @@ func get_item_resource(item_id : String) -> Resource:
 	else:
 		return ERROR
 
-func get_item(item_id : String) -> Node2D:
+func get_item(item_id : String) -> BaseItem:
 	return get_item_resource(item_id).instance()

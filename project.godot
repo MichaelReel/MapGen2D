@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node",
+"base": "Control",
 "class": "BaseItem",
 "language": "GDScript",
 "path": "res://inventory/items/BaseItem.gd"
@@ -19,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://items/Doorway.gd"
 }, {
-"base": "TextureRect",
+"base": "Control",
 "class": "InventoryGrid",
 "language": "GDScript",
 "path": "res://inventory/InventoryGrid.gd"

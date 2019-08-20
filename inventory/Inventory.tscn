@@ -24,5 +24,6 @@ margin_left = 16.0
 margin_top = 16.0
 margin_right = 240.0
 margin_bottom = 109.0
-tile_pos = Vector2( 0, 0 )
+tile_pos = Vector2( 1, 1 )
+grid_limits = Vector2( 2, 3 )
 [connection signal="visibility_changed" from="Control" to="." method="_on_Control_visibility_changed"]

@@ -3,12 +3,14 @@
 [ext_resource path="res://inventory/items/BaseItem.gd" type="Script" id=1]
 [ext_resource path="res://assets/roguelikeSheet_transparent.png" type="Texture" id=2]
 
-[node name="Chicken" type="Node2D"]
+[node name="Chicken" type="Control"]
+margin_right = 16.0
+margin_bottom = 16.0
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
-offset = Vector2( -1, -1 )
+offset = Vector2( 7, 7 )
 vframes = 31
 hframes = 57
 frame = 909

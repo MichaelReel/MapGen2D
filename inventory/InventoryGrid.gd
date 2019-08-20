@@ -1,4 +1,4 @@
-extends TextureRect
+extends Control
 
 class_name InventoryGrid
 
@@ -41,23 +41,22 @@ func setup_item_record():
 func get_global_rect() -> Rect2:
 	return Rect2(background.global_position + grid_pos * cell_size, grid_size * cell_size)
 
-func insert_item_at_first_available_slot(item : Node2D):
+func insert_item_at_first_available_slot(item : BaseItem):
 	for y in range(grid_size.y):
 		for x in range(grid_size.x):
 			if grid[y][x] == null:
-				item.global_position = background.global_position + (Vector2(x, y) + grid_pos) * cell_size
+				item.rect_position = background.global_position + (Vector2(x, y) + grid_pos) * cell_size
 				if insert_item(item):
 					return true
 	return false
 
 func insert_item(item) -> bool:
-	var item_pos = item.global_position + cell_size / 2
+	var item_pos = item.rect_position + cell_size / 2
 	var g_pos = pos_to_grid_coord(item_pos)
-	var item_size = get_grid_size(item)
 	
 	if is_grid_space_available(g_pos):
 		set_grid_space(g_pos, item)
-		item.global_position = background.global_position + grid_pos * cell_size + g_pos * cell_size + cell_size / 2
+		item.rect_position = background.global_position + grid_pos * cell_size + g_pos * cell_size + (cell_size - item.rect_size) / 2
 		return true
 	else:
 		return false
@@ -69,12 +68,7 @@ func pos_to_grid_coord(pos) -> Vector2:
 	results.y = int(local_pos.y / cell_size.y)
 	return results
 
-func get_grid_size(item) -> Vector2:
-	# Simplified for now
-	var results := Vector2(1, 1)
-	return results
-	
-func set_grid_space(pos : Vector2, item : Node2D = null) -> Node2D:
+func set_grid_space(pos : Vector2, item = null) -> BaseItem:
 	var old_item = grid[pos.y][pos.x]
 	grid[pos.y][pos.x] = item
 	return old_item
@@ -87,6 +81,25 @@ func is_grid_space_available(pos : Vector2) -> bool:
 	if grid[pos.y][pos.x]:
 		return false
 	return true
+
+func get_item_coords_under_pos(pos : Vector2):
+	# TODO: There's a simpler way to calculate this:
+	for y in range (grid_size.y):
+		for x in range (grid_size.x):
+			var inv_item : BaseItem = grid[y][x]
+			if inv_item:
+				if inv_item.has_point(pos):
+					return Vector2(x, y)
+	return null
+
+func grab_item(pos : Vector2) -> BaseItem:
+	var ind : Vector2 = get_item_coords_under_pos(pos)
+	if ind == null:
+		return null
+		
+	var item : BaseItem = grid[ind.y][ind.x]
+	set_grid_space(ind, null)
+	return item
 
 func _on_InventoryGrid_visibility_changed():
 	# Changing visibility on this tecture rect doesn't apply to sub scenes
