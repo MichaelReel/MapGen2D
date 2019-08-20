@@ -18,8 +18,8 @@ onready var rays : Dictionary = {
 		"1_0": $RayCastRight,
 	}
 onready var frozen : bool = true
-onready var anim : AnimationPlayer = $AnimationPlayer
-onready var inv : Node2D = $Inventory
+onready var anim := $AnimationPlayer
+onready var inv := $Inventory
 
 func _enter_tree():
 	print("Player _enter_tree")
@@ -28,7 +28,7 @@ func _enter_tree():
 func _ready():
 	print("Player _ready")
 	anim.playback_speed = speed * anim_sp_ratio
-	inv.visible = false
+	inv.set_visiblity(false)
 
 # warning-ignore:unused_argument
 func _process(delta):
@@ -60,7 +60,7 @@ func _process(delta):
 			collision_item.use(facing, self)
 	
 	if Input.is_action_just_pressed("inv_show"):
-		if inv.visible == false:
+		if inv.is_visible() == false:
 			print("Show Inventory")
 			show_inventory()
 		else:
@@ -145,9 +145,9 @@ func show_opposite_inventory_grid(inv_grid : InventoryGrid):
 
 func show_inventory():
 	freeze()
-	inv.visible = true
+	inv.set_visiblity(true)
 
 func hide_inventory():
-	inv.visible = false
+	inv.set_visiblity(false)
 	inv.set_opposite_inventory_grid(null)
 	thaw()

@@ -1,8 +1,7 @@
-extends Control
+extends CanvasLayer
 
-
-onready var inv_base = $InventoryBase
-onready var grid_backpack : InventoryGrid = $InventoryBase/GridBackPack
+onready var control = $Control
+onready var grid_backpack : InventoryGrid = $Control/Viewport/GridBackPack
 var opposite_grid : InventoryGrid
 
 var item_held : Node = null
@@ -27,4 +26,13 @@ func pickup_item(item_id : String):
 
 func set_opposite_inventory_grid(opposite : InventoryGrid):
 	opposite_grid = opposite
-	
+
+func set_visiblity(visible : bool):
+	control.visible = visible
+
+func is_visible() -> bool:
+	return control.visible
+
+func _on_Control_visibility_changed():
+	# Oddly, just changing visiblity on control doesn't change it on the sub scene
+	grid_backpack.visible = control.visible

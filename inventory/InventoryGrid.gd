@@ -87,3 +87,11 @@ func is_grid_space_available(pos : Vector2) -> bool:
 	if grid[pos.y][pos.x]:
 		return false
 	return true
+
+func _on_InventoryGrid_visibility_changed():
+	# Changing visibility on this tecture rect doesn't apply to sub scenes
+	for y in range (grid_size.y):
+		for x in range (grid_size.x):
+			var inv_item = grid[y][x]
+			if inv_item:
+				inv_item.visible = self.visible
