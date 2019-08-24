@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Control",
+"base": "TextureRect",
 "class": "BaseItem",
 "language": "GDScript",
 "path": "res://inventory/items/BaseItem.gd"
@@ -25,6 +25,11 @@ _global_script_classes=[ {
 "path": "res://inventory/InventoryGrid.gd"
 }, {
 "base": "Node2D",
+"class": "ItemContainer",
+"language": "GDScript",
+"path": "res://items/ItemContainer.gd"
+}, {
+"base": "Node2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://player/Player.gd"
@@ -38,6 +43,7 @@ _global_script_class_icons={
 "BaseItem": "",
 "Doorway": "",
 "InventoryGrid": "",
+"ItemContainer": "",
 "Player": "",
 "TownGen": ""
 }

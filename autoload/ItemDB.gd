@@ -16,10 +16,8 @@ func _ready():
 			# Get the error object ready for bad item calls
 			if file_name.begins_with("Error"):
 				ERROR = load(ITEM_PATH + file_name)
-				print("ERROR set to " + str(ERROR) + " : " + file_name)
 			else:
 				ITEMS[file_name.get_basename()] = load(ITEM_PATH + file_name)
-				print(file_name.get_basename() + " set to " + str(ITEMS[file_name.get_basename()]) + " : " + file_name)
 		file_name = dir.get_next()
 
 func get_item_resource(item_id : String) -> Resource:

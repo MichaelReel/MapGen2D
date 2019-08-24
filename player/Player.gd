@@ -44,7 +44,6 @@ func _process(delta):
 			var collision_item = get_collider_item(anim_name)
 			if collision_item and collision_item.has_method("bump"):
 				collision_item.bump(dir)
-			print (str(collision_item))
 			
 			# Play the "look" only animation
 			anim_name += "_look"
@@ -56,7 +55,8 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_select"):
 		var facing_name : String = str(int(facing.x)) + "_" + str(int(facing.y))
 		var collision_item = get_collider_item(facing_name)
-		if collision_item:
+		if collision_item and collision_item.has_method("use"):
+			print("Calling use on " + str(collision_item) + " with " + str(facing) + " and " + str(self))
 			collision_item.use(facing, self)
 	
 	if Input.is_action_just_pressed("inv_show"):
@@ -137,10 +137,10 @@ func set_view_tile_bounds(tile_bounds : Rect2):
 	$Camera2D.limit_top    = bounds.position.y
 	$Camera2D.limit_bottom = bounds.end.y
 
-func show_opposite_inventory_grid(inv_grid : InventoryGrid):
-	print("Setting opposite inventory " + str(inv_grid))
+func show_opposite_inventory_grid(opp_inv : ItemContainer):
+	print("Setting opposite inventory " + str(opp_inv) + " in the inventory manager :" + str(inv))
 	# Add the opposite inventory_grid to the inventory display and show the inventory
-	inv.set_opposite_inventory_grid(inv_grid)
+	inv.set_opposite_inventory_grid_data(opp_inv)
 	show_inventory()
 
 func show_inventory():
@@ -149,5 +149,5 @@ func show_inventory():
 
 func hide_inventory():
 	inv.set_visiblity(false)
-	inv.set_opposite_inventory_grid(null)
+	inv.return_opposite_grid_data()
 	thaw()

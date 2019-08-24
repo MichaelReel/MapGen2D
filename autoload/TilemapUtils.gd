@@ -2,6 +2,7 @@ extends Node
 
 const INTERACTION_Z_LAYER := 1
 const SHARED_TILE_SIZE := Vector2(16, 16)
+# warning-ignore:unused_class_variable
 onready var SHARED_TILE_SET : TileSet = (load("res://assets/ModerateTileSet.tres") as TileSet)
 
 func merge_structure_into_map(structure : Node2D, map : Node2D, offset : Vector2 = Vector2()) -> Dictionary:
@@ -45,6 +46,5 @@ func merge_structure_into_map(structure : Node2D, map : Node2D, offset : Vector2
 				item_inst.position = (offset * SHARED_TILE_SIZE) + item_node.position
 				map.add_child(item_inst)
 				item_inst.owner = map
-				
 				
 	return return_dict

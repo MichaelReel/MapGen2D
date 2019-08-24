@@ -40,7 +40,6 @@ func generate_town(town_seed, town_size : Vector2 = Vector2(64,38)) -> Dictionar
 	rand.seed = town_seed
 	
 	var noise = setup_noise(rand)
-	rand_seed(rand.randi())
 	create_base_layer(noise, node_2d, town_size)
 	
 	var scene := PackedScene.new()

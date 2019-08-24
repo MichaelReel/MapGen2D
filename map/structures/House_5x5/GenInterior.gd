@@ -86,10 +86,13 @@ func create_base_layers(rseed : int, node_2d : Node2D, room_size : Vector2):
 		bedroom_offset = Vector2(9,2)
 	else:
 		kitchen_offset = Vector2(9,2)
+	# warning-ignore:return_value_discarded
 	TilemapUtils.merge_structure_into_map(kitchen, node_2d, kitchen_offset)
+	# warning-ignore:return_value_discarded
 	TilemapUtils.merge_structure_into_map(bedroom, node_2d, bedroom_offset)
 	
 	var mid_x := 8
+	# warning-ignore:narrowing_conversion
 	var y : int = room_size.y - 1
 	map["Obstacles"].set_cell(mid_x, y, TileMap.INVALID_CELL)
 		
