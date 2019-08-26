@@ -18,7 +18,7 @@ hdr = false
 render_target_update_mode = 3
 
 [node name="OppositeGrid" parent="Control/Viewport" instance=ExtResource( 2 )]
-tile_pos = Vector2( 4, 1 )
+tile_pos = Vector2( 6, 1 )
 
 [node name="GridBackPack" parent="Control/Viewport" instance=ExtResource( 2 )]
 tile_pos = Vector2( 1, 1 )

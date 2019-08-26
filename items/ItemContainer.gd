@@ -47,6 +47,7 @@ func add_item(item_id : String):
 	if !insert_item_at_first_available_slot(item):
 		item.queue_free()
 		return false
+	print("Chest contents updated: " + str(grid))
 	return true
 
 func insert_item_at_first_available_slot(item : BaseItem):
@@ -56,4 +57,5 @@ func insert_item_at_first_available_slot(item : BaseItem):
 			if not is_instance_valid(grid[y][x]):
 				print("Empty location - x:" + str(x) + ", y:" + str(y))
 				grid[y][x] = item
+				return true
 	return false

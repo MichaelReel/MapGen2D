@@ -103,7 +103,8 @@ func is_visible() -> bool:
 	return control.visible
 
 func _on_Control_visibility_changed():
-	return_opposite_grid_data()
+	if control.visible == false:
+		return_opposite_grid_data()
 	# Oddly, just changing visiblity on control doesn't change it on the sub scene
 	grid_backpack.visible = control.visible
 	opposite_grid.visible = false
