@@ -40,14 +40,11 @@ func grab(cursor_pos):
 			viewport.move_child(last_container, viewport.get_child_count())
 			last_pos = item_held.rect_global_position
 			item_offset = item_held.rect_global_position - cursor_pos
-	print("Grabbed " + str(item_held) + " from " + str(c))
 
 func release(cursor_pos):
 	if not is_instance_valid(item_held):
 		return
-	print ("Releasing grip of " + str(item_held) + " at " + str(cursor_pos))
 	var c = get_container_under_cursor(cursor_pos)
-	print ("Attempt to insert into contrainer " + str(c))
 	if not is_instance_valid(c):
 		drop_item()
 	elif c.has_method("insert_item"):
@@ -74,21 +71,17 @@ func drop_item():
 	item_held = null
 
 func return_item():
-	print("Returning item to " + str(last_pos) + " on " + str(last_container))
 	item_held.rect_global_position = last_pos
 	last_container.insert_item(item_held)
 	item_held.set_as_toplevel(false)
 	item_held = null
 
 func set_opposite_inventory_grid_data(source):
-	print("Getting opposite inventory grid: " + str(source))
 	return_opposite_grid_data()
 
 	opposite_source = source
 	if is_instance_valid(opposite_source) and opposite_source.has_method("get_item_store"):
-		print(" opposite_source " + str(opposite_source) + " exists and has a get_item_store method")
 		var store : Array = opposite_source.get_item_store()
-		print("set the grid array " + str(opposite_grid) + " with store " + str(store))
 		opposite_grid.set_item_grid(store)
 
 func return_opposite_grid_data():

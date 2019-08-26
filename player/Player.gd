@@ -22,11 +22,9 @@ onready var anim := $AnimationPlayer
 onready var inv := $Inventory
 
 func _enter_tree():
-	print("Player _enter_tree")
 	set_process(true)
 
 func _ready():
-	print("Player _ready")
 	anim.playback_speed = speed * anim_sp_ratio
 	inv.set_visiblity(false)
 
@@ -56,15 +54,12 @@ func _process(delta):
 		var facing_name : String = str(int(facing.x)) + "_" + str(int(facing.y))
 		var collision_item = get_collider_item(facing_name)
 		if collision_item and collision_item.has_method("use"):
-			print("Calling use on " + str(collision_item) + " with " + str(facing) + " and " + str(self))
 			collision_item.use(facing, self)
 	
 	if Input.is_action_just_pressed("inv_show"):
 		if inv.is_visible() == false:
-			print("Show Inventory")
 			show_inventory()
 		else:
-			print("Hide Inventory")
 			hide_inventory()
 
 func can_move(anim_name : String):
@@ -138,7 +133,6 @@ func set_view_tile_bounds(tile_bounds : Rect2):
 	$Camera2D.limit_bottom = bounds.end.y
 
 func show_opposite_inventory_grid(opp_inv : ItemContainer):
-	print("Setting opposite inventory " + str(opp_inv) + " in the inventory manager :" + str(inv))
 	# Add the opposite inventory_grid to the inventory display and show the inventory
 	inv.set_opposite_inventory_grid_data(opp_inv)
 	show_inventory()

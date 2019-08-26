@@ -10,7 +10,6 @@ func change_scene_to(portal : Dictionary, focus: Node2D, delay : float = 0.0):
 	var node_2d = get_tree().get_root()
 	var scene_name = portal["target_name"]
 	var scene = WorldGenerator.get_scene_library(portal["target_name"])
-	print("Loading packed scene with key: " + scene_name + " and value: " + str(scene))
 	var new_pos = portal["target_coords"]
 	var bounds = portal["bounds"]
 	
