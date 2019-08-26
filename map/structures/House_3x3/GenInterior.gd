@@ -37,7 +37,7 @@ func generate(room_seed, room_size : Vector2 = Vector2(13, 8)) -> Dictionary:
 	var scene := PackedScene.new()
 	assert(scene.pack(node_2d) == OK)
 	
-	return { "scene" : scene, "return_portal" : return_portal, "scene_bounds" : Rect2(Vector2(), room_size) }
+	return { "scene" : scene, "return_portal" : return_portal, "scene_bounds" : Rect2(Vector2(), room_size - Vector2(1,1)) }
 
 func load_room_pools():
 	for room in kitchen_pool:

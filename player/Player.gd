@@ -66,15 +66,15 @@ func can_move(anim_name : String):
 	var ray : RayCast2D = rays[anim_name]
 	if ray.is_colliding():
 		return false
-	if frozen:
+	elif frozen:
 		return false
-	if anim_name == "-1_0" and position.x - (1 * TilemapUtils.SHARED_TILE_SIZE.x) < bounds.position.x:
+	elif anim_name == "-1_0" and position.x - (1 * TilemapUtils.SHARED_TILE_SIZE.x) < bounds.position.x:
 		return false
-	if anim_name == "0_-1" and position.y - (1 * TilemapUtils.SHARED_TILE_SIZE.y) < bounds.position.y:
+	elif anim_name == "0_-1" and position.y - (1 * TilemapUtils.SHARED_TILE_SIZE.y) < bounds.position.y:
 		return false
-	if anim_name == "1_0" and position.x + (1 * TilemapUtils.SHARED_TILE_SIZE.x) >= bounds.end.x:
+	elif anim_name == "1_0" and position.x + (1 * TilemapUtils.SHARED_TILE_SIZE.x) >= bounds.end.x:
 		return false
-	if anim_name == "0_1" and position.y + (1 * TilemapUtils.SHARED_TILE_SIZE.y) >= bounds.end.y:
+	elif anim_name == "0_1" and position.y + (1 * TilemapUtils.SHARED_TILE_SIZE.y) >= bounds.end.y:
 		return false
 		
 	return true
