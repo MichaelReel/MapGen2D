@@ -7,8 +7,9 @@ onready var anim = $AnimationPlayer
 var grid : Array
 
 func _ready():
-	create_storage(storage_size)
-	add_item("Chicken")
+	if grid.empty():
+		create_storage(storage_size)
+		add_item("Chicken")
 
 func create_storage(size : Vector2):
 	var new_grid := []

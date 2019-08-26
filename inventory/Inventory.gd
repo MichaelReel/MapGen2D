@@ -1,8 +1,9 @@
 extends CanvasLayer
 
-onready var control = $Control
-onready var grid_backpack : InventoryGrid = $Control/Viewport/GridBackPack
-onready var opposite_grid : InventoryGrid = $Control/Viewport/OppositeGrid
+onready var control = $ViewportContainer
+onready var viewport = $ViewportContainer/Viewport
+onready var grid_backpack : InventoryGrid = $ViewportContainer/Viewport/GridBackPack
+onready var opposite_grid : InventoryGrid = $ViewportContainer/Viewport/OppositeGrid
 
 var item_held : BaseItem = null
 var item_offset := Vector2()
@@ -36,9 +37,9 @@ func grab(cursor_pos):
 		if is_instance_valid(item_held):
 			item_held.set_as_toplevel(true)
 			last_container = c
+			viewport.move_child(last_container, viewport.get_child_count())
 			last_pos = item_held.rect_global_position
 			item_offset = item_held.rect_global_position - cursor_pos
-#			c.move_child(item_held, get_child_count())
 	print("Grabbed " + str(item_held) + " from " + str(c))
 
 func release(cursor_pos):

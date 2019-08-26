@@ -121,6 +121,9 @@ func insert_item(item : BaseItem, g_pos = null) -> bool:
 
 func update_item_to_cell_pos(item : BaseItem, g_pos : Vector2):
 	item.rect_position = (grid_bounds.position + g_pos) * cell_size + (cell_size - item.rect_size) / 2
+	if not is_a_parent_of(item):
+		add_child(item)
+	move_child(item, get_child_count())
 
 func pos_to_grid_coord(pos : Vector2):
 	var local_pos = pos - (grid_bounds.position * cell_size)
@@ -161,4 +164,5 @@ func _on_InventoryGrid_visibility_changed():
 	for row in grid:
 		for inv_item in row:
 			if inv_item:
+				print ("Updating item " + str(inv_item) + " to visibility \"" + str(self.visible) + "\"")
 				inv_item.visible = self.visible
