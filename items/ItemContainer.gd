@@ -6,6 +6,12 @@ export (Vector2) var storage_size = Vector2(2,2)
 onready var anim = $AnimationPlayer
 var grid : Array
 
+func _get_property_list():
+	# This tells the engine to save our 2D 'grid' of items
+	return [
+		{ "name" : "grid", "type" : TYPE_ARRAY }
+	]
+
 func _ready():
 	if grid.empty():
 		create_storage(storage_size)
