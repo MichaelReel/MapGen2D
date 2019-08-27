@@ -53,7 +53,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_select"):
 		var facing_name : String = str(int(facing.x)) + "_" + str(int(facing.y))
 		var collision_item = get_collider_item(facing_name)
-		if collision_item and collision_item.has_method("use"):
+		if is_instance_valid(collision_item) and collision_item.has_method("use"):
 			collision_item.use(facing, self)
 	
 	if Input.is_action_just_pressed("inv_show"):
@@ -82,6 +82,8 @@ func can_move(anim_name : String):
 func get_collider_item(anim_name : String) -> Object:
 	# Return an Item if it's an item that can be used
 	var obj = null
+	if not rays.has(anim_name):
+		return obj
 	var ray : RayCast2D = rays[anim_name]
 	if ray.is_colliding():
 		var collider = ray.get_collider()
