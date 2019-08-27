@@ -1,16 +1,16 @@
 # MapGen2D
-Yet another attempt at map gen, taking advantage of autotiles
+Yet another attempt at map gen, taking advantage of autotiles.
 
 Using some assets from https://www.kenney.nl/ to attempt some automap generation with character and hopefully mob movement.
 Some assets will have been extended slightly to create full autotile sets, but still trying to stay in the Kenney style.
 
-### Running the demo
+## Running the demo
 
 Controls in this demo are `W` `A` `S` `D` or the arrow keys.
 To open the inventory press `E`.
 To open a chest press `Space`.
 To close the inventory, or close a chest after opening, press `E`.
-Move into a door to 
+Move into a door to open it and change the scene.
 
 ## General 'Design' Approach
 
